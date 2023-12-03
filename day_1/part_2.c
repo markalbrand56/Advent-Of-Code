@@ -37,25 +37,38 @@ int main(int argc, char *argv[])
     // For each line read
     char *current_line = lines[i];
     char buffer[MAX_LINE_LENGTH];
+    char L[MAX_LINE_LENGTH];
+    char R[MAX_LINE_LENGTH];
 
-    for (int j = 0; j < strlen(current_line); j++) {
+    memset(buffer,0,strlen(buffer));
+    memset(L, 0, strlen(L));
+    memset(R, 0, strlen(R));
+    int j2 = 0;
+
+    for (int j = 0; j <= strlen(current_line); j++) {
       // For each char in line
-      char current = current_line[j];
-      buffer[j] = current;
-      int comp = -1;
+      char current = current_line[j];  // Current character
+      buffer[j2] = current;
 
+      j2++;
 
       for (int h = 0; h < 10; h++) {
         // iterate over the numbers_written
-        comp = strcmp(numbers_written[h], buffer);
+        if (strstr(buffer, numbers_written[h]) != NULL) {
+          strcpy(R, numbers_written[h]);
 
-        if (comp == 0) {
-          printf("Line %i num %s\n", i, numbers_written[h]);
+          if (L[0] == '\0') {
+            strcpy(L, numbers_written[h]);
+            //printf("Copied L %s\n", L);
+          }
+
+          // LIMPIAR ACÁ BUFFER
+          memset(buffer, 0, sizeof(buffer));
+          j2 = 0;
         }
       }
     }
-    printf("Buffer: %s\n", buffer);
-    memset(buffer, 0, sizeof(buffer));
+    printf("L %s R %s\n", L, R);
   }
 
   printf("Total: %d\n", total);
