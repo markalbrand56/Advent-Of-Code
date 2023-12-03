@@ -1,7 +1,8 @@
-# Advent-Of-Code
+# [Advent of Code 2023](https://adventofcode.com/2023)
  Advent of Code 2023
 
-## Lenguajes a usar (de manera aleatoria)
+## Desafíos adicionales
+### Lenguajes a usar (de manera aleatoria)
 - Python
 - Go
 - C 
@@ -9,6 +10,11 @@
 - Rust
 - JavaScript
 - Kotlin
+
+![Roulette](https://github.com/markalbrand56/Advent-Of-Code/blob/main/assets/screenshot.png)
+
+### Editor
+**NeoVim** en Ubuntu
 
 ## Días
 ### Day 1: Trebuchet ⭐⭐
