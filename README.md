@@ -12,4 +12,4 @@
 
 ## Días
 ### Day 1: Trebuchet
-*C*
+[<img align="left" alt="Go" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" style="padding-right:10px;" />]()
