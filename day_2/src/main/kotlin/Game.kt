@@ -7,7 +7,7 @@ class Game(val id: Int){
     private val MAX_GREEN = 13
     private val MAX_BLUE = 14
 
-    var roundPossible = true
+    private var roundPossible = true
 
     fun possible(): Boolean {
         return roundPossible
