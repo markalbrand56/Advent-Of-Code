@@ -23,19 +23,27 @@ fun main(args: Array<String>) {
                 val color = cubesSplit[1]
 
                 if (color == "red"){
-                    game.r = Integer.parseInt(amount)
+                    val red = Integer.parseInt(amount)
+
+                    if (red > game.r) {
+                        game.r = red
+                    }
                 } else if (color == "green"){
-                    game.g = Integer.parseInt(amount)
+                    val green = Integer.parseInt(amount)
+
+                    if (green > game.g) {
+                        game.g = green
+                    }
                 } else if (color == "blue"){
-                    game.b = Integer.parseInt(amount)
+                    val blue = Integer.parseInt(amount)
+
+                    if (blue > game.b) {
+                        game.b = blue
+                    }
                 }
-                game.check()
             }
         }
-        println("${game.id} ${game.possible()} R:${game.r} G:${game.g} B:${game.b}")
-        if (game.possible()){
-            total += game.id
-        }
+        total += game.r * game.g * game.b
     }
 
     println("TOTAL: $total")  // 2439
