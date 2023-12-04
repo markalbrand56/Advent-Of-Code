@@ -17,9 +17,7 @@
 **NeoVim** en Ubuntu
 
 ## Días
-### Day 1: Trebuchet ⭐⭐
-[<img align="left" alt="Go" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" style="padding-right:10px;" />]()
+### Day 1: Trebuchet ⭐⭐ [<img align="left" alt="Go" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" style="padding-right:10px;" />]()
 
-### Day 2: Cube Conundrum ⭐⭐
-[<img align="left" alt="Kotlin" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" style="padding-right:10px;" />]()
+### Day 2: Cube Conundrum ⭐⭐ [<img align="left" alt="Kotlin" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" style="padding-right:10px;" />]()
           
