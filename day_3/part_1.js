@@ -61,7 +61,7 @@ fs.readFile("sample.txt", "utf8", (error, datos) => {
   console.log("Symbols", symbols)
 
   // Encontrar los adyacentes
-  const total = 0 
+  let total = 0 
 
   nums.forEach(num => {
 
@@ -75,6 +75,7 @@ fs.readFile("sample.txt", "utf8", (error, datos) => {
         if((diffY <= 1) && (diffY >= -1) && (diffX <= 1) && (diffX >= -1) && !valid){
           console.log(num.n, symbol.s)
           valid = true
+          total += num.n
         }
 
       }
@@ -82,4 +83,6 @@ fs.readFile("sample.txt", "utf8", (error, datos) => {
     })
     
   })
+
+  console.log("TOTAL", total)
 })
