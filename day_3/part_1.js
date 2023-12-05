@@ -59,4 +59,27 @@ fs.readFile("sample.txt", "utf8", (error, datos) => {
 
   console.log("Nums: ", nums)
   console.log("Symbols", symbols)
+
+  // Encontrar los adyacentes
+  const total = 0 
+
+  nums.forEach(num => {
+
+    symbols.forEach(symbol => {
+      let valid = false
+
+      for(let i = num.xi; i <= num.xf; i++){
+        diffX = i - symbol.x 
+        diffY = num.y - symbol.y
+
+        if((diffY <= 1) && (diffY >= -1) && (diffX <= 1) && (diffX >= -1) && !valid){
+          console.log(num.n, symbol.s)
+          valid = true
+        }
+
+      }
+
+    })
+    
+  })
 })
