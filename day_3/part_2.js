@@ -1,0 +1,97 @@
+const fs = require("fs")
+
+console.log("Hello world")
+
+function isCharNumber(c) {
+  return typeof c === 'string' && c.length === 1 && c >= '0' && c <= '9';
+}
+
+fs.readFile("input.txt", "utf8", (error, datos) => {
+  if (error) {
+    console.error("Error al leer el archivo ", error)
+    return
+  }
+
+  //console.log("Contenido: \n", datos)
+
+  const lineas = datos.split('\n')
+  console.log("Len", lineas.length)
+  const nums = []
+  const symbols = []
+
+  for (let i = 0; i < (lineas.length); i++) {
+    // por cada linea
+    const linea = lineas[i]
+    var tempNum = ""
+
+    for (let j = 0; j < (linea.length); j++) {
+      const char = linea[j];  // char
+
+      if (isCharNumber(char)){
+        tempNum += char.trim()
+
+      } else {
+        // console.log("Temp", tempNum)
+        const n = parseInt(tempNum)
+
+        if(!isNaN(n)){  // Guarda el número temporal independiente de qué lea
+          nums.push({
+            n: n,  // Numero
+            xi: j-tempNum.length,  // Columna inicial
+            xf: j-1,  // Columna final
+            y: i  // Fila
+          })
+          tempNum = ""
+        }
+
+        if (char !== "." && char !== "\r" && char !== "\n") {
+          // console.log("Symbol", char)
+
+          symbols.push({
+            s: char,
+            x: j,
+            y: i
+          })
+        }
+      }
+    }
+  }
+
+  console.log("Nums: ", nums)
+  console.log("Symbols", symbols)
+
+  // Encontrar los adyacentes
+  let total = 0
+
+  symbols.forEach(symbol => {
+    let adyacents = []
+
+    nums.forEach(number => {
+      let valid = false
+
+      for (let i = number.xi; i <= number.xf; i++) {
+        const diffX = i - symbol.x
+        const diffY = number.y - symbol.y
+
+        if ((diffY <= 1) && (diffY >= -1) && (diffX <= 1) && (diffX >= -1) && !valid) {
+          // console.log(num.n, symbol.s)
+          valid = true
+          adyacents.push(number.n)
+        }
+      }
+    })
+
+    if (adyacents.length === 2){
+      total += adyacents[0] * adyacents[1]
+    }
+    // else {
+    //   adyacents.forEach(num => {
+    //     total += 0
+    //   })
+    // }
+
+
+  })
+
+  console.log("TOTAL", total)
+})
