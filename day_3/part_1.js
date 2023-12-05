@@ -17,6 +17,7 @@ fs.readFile("sample.txt", "utf8", (error, datos) => {
   const lineas = datos.split('\n')
   console.log("Len", lineas.length)
   const nums = []
+  const symbols = []
 
   for (let i = 0; i < (lineas.length); i++) {
     // por cada linea 
@@ -33,19 +34,29 @@ fs.readFile("sample.txt", "utf8", (error, datos) => {
       } else {
         const n = parseInt(tempNum)
 
-        if(!isNaN(n)){
+        if(!isNaN(n)){  // Guarda el número temporal independiente de qué lea
           nums.push({
-            n: n,
-            xi: j-tempNum.length,
-            xf: j-1,
-            y: i
+            n: n,  // Numero
+            xi: j-tempNum.length,  // Columna inicial
+            xf: j-1,  // Columna final
+            y: i  // Fila
           })
           tempNum = ""
         }
 
+        if (char != ".") {
+          console.log("Symbol", char)
+
+          symbols.push({
+            s: char, 
+            x: j,
+            y: i
+          })
+        }
       }
     }
   }
 
   console.log("Nums: ", nums)
+  console.log("Symbols", symbols)
 })
