@@ -3,7 +3,7 @@ const fs = require("fs")
 console.log("Hello world")
 
 function isCharNumber(c) {
-  return typeof c === 'string' && c.length == 1 && c >= '0' && c <= '9';
+  return typeof c === 'string' && c.length === 1 && c >= '0' && c <= '9';
 }
 
 fs.readFile("input.txt", "utf8", (error, datos) => {
@@ -20,18 +20,18 @@ fs.readFile("input.txt", "utf8", (error, datos) => {
   const symbols = []
 
   for (let i = 0; i < (lineas.length); i++) {
-    // por cada linea 
+    // por cada linea
     const linea = lineas[i]
     var tempNum = ""
 
     for (let j = 0; j < (linea.length); j++) {
-      const char = linea[j];  // char 
-      
+      const char = linea[j];  // char
+
       if (isCharNumber(char)){
         tempNum += char.trim()
 
       } else {
-        console.log("Temp", tempNum)
+        // console.log("Temp", tempNum)
         const n = parseInt(tempNum)
 
         if(!isNaN(n)){  // Guarda el número temporal independiente de qué lea
@@ -44,11 +44,11 @@ fs.readFile("input.txt", "utf8", (error, datos) => {
           tempNum = ""
         }
 
-        if (char != ".") {
-          console.log("Symbol", char)
+        if (char !== "." && char !== "\r" && char !== "\n") {
+          // console.log("Symbol", char)
 
           symbols.push({
-            s: char, 
+            s: char,
             x: j,
             y: i
           })
@@ -61,27 +61,26 @@ fs.readFile("input.txt", "utf8", (error, datos) => {
   console.log("Symbols", symbols)
 
   // Encontrar los adyacentes
-  let total = 0 
+  let total = 0
 
   nums.forEach(num => {
 
     symbols.forEach(symbol => {
       let valid = false
 
-      for(let i = num.xi; i <= num.xf; i++){
-        diffX = i - symbol.x 
-        diffY = num.y - symbol.y
+      for (let i = num.xi; i <= num.xf; i++) {
+        const diffX = i - symbol.x
+        const diffY = num.y - symbol.y
 
-        if((diffY <= 1) && (diffY >= -1) && (diffX <= 1) && (diffX >= -1) && !valid){
-          console.log(num.n, symbol.s)
+        if ((diffY <= 1) && (diffY >= -1) && (diffX <= 1) && (diffX >= -1) && !valid) {
+          // console.log(num.n, symbol.s)
           valid = true
           total += num.n
         }
-
       }
 
     })
-    
+
   })
 
   console.log("TOTAL", total)
