@@ -6,7 +6,7 @@ function isCharNumber(c) {
   return typeof c === 'string' && c.length == 1 && c >= '0' && c <= '9';
 }
 
-fs.readFile("sample.txt", "utf8", (error, datos) => {
+fs.readFile("input.txt", "utf8", (error, datos) => {
   if (error) {
     console.error("Error al leer el archivo ", error)
     return
@@ -28,10 +28,10 @@ fs.readFile("sample.txt", "utf8", (error, datos) => {
       const char = linea[j];  // char 
       
       if (isCharNumber(char)){
-        console.log("Num", char)
         tempNum += char.trim()
 
       } else {
+        console.log("Temp", tempNum)
         const n = parseInt(tempNum)
 
         if(!isNaN(n)){  // Guarda el número temporal independiente de qué lea
