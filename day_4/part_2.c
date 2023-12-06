@@ -11,7 +11,7 @@ int main() {
 
   FILE *fp;
 
-  fp = fopen("sample.txt", "r");
+  fp = fopen("input.txt", "r");
 
   if (fp == NULL) {
     printf("Error opening file\n");
@@ -38,11 +38,10 @@ int main() {
   }
 
   for (int i = 0; i < line_count; i++) {
-    printf("i: %d cards[i]: %d", i, cards[i]);
     int current_cards = cards[i];
     for (int h = 0; h < current_cards; h++){
 
-      char *current_line = lines[i];
+      char *current_line = strdup(lines[i]);
       char *tkn = strtok(current_line, ":");  // Card N
 
       int winning[100] = {-1}; // Todos inician en -1
@@ -52,11 +51,11 @@ int main() {
       int counter = 0;
       int subtotal = 0;
 
-      printf("\t%s\n", tkn);
+//      printf("\t%s\n", tkn);
 
       tkn = strtok(NULL, ":");
-    
       char *nums = strtok(tkn, " ");
+
       while(nums != NULL){
         if (strcmp(nums, "|") == 0){
           finding = true;
@@ -73,8 +72,7 @@ int main() {
               // Si hay un número ganador, se obtiene una carta nueva
               next_card++;
               cards[next_card] += 1;
-              printf("%d Card %d: %d\n", winning[j], (next_card+1), cards[next_card]);
-            }  
+            }
           }
   
         } else { // Add to wining
@@ -88,11 +86,13 @@ int main() {
     }
   }
 
-  printf("\nTOTAL: %i\n", total_cards);
-
   for (int i = 0; i < line_count; i++) {
     printf("Card %i: %i\n", (i+1), cards[i]);
+    total_cards += cards[i];
   }
+
+    printf("\nTOTAL: %i\n", total_cards);
+
 
   return 0;
 }
