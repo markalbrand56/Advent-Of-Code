@@ -26,8 +26,67 @@ int main() {
   file.close();
 
   for (const auto& l : lineas) {
-        std::cout << l << std::endl;
+
+    if(l.empty()){  // Lineas en blanco
+      cout << "Vacio" << endl;
+    } else {
+      cout << l << endl;
+    }
   }
+
+  // División de líneas
+  string seeds = lineas[0];  // lineas[1]: ""
+  int i = 2;
+
+
+  // Seed to soil
+  cout << "SEED TO SOIL" << endl;
+  for(; !lineas[i].empty(); i++){
+    cout << lineas[i] << endl;
+  }
+
+  cout << "SOILD TO FERTILIZER" << endl;
+  i++;
+
+  for(; !lineas[i].empty(); i++){
+    cout << lineas[i] << endl;
+  }
+
+  cout << "FERTILIZER TO WATER" << endl;
+  i++;
+
+  for(; !lineas[i].empty(); i++){
+    cout << lineas[i] << endl;
+  }
+
+  cout << "WATER TO LIGHT" << endl;
+  i++;
+
+  for(; !lineas[i].empty(); i++){
+    cout << lineas[i] << endl;
+  }
+
+  cout << "LIGHT TO TEMP" << endl;
+  i++;
+
+  for(; !lineas[i].empty(); i++){
+    cout << lineas[i] << endl;
+  }
+
+  cout << "TEMP TO HUMIDITY" << endl;
+  i++;
+
+  for(; !lineas[i].empty(); i++){
+    cout << lineas[i] << endl;
+  }
+
+  cout << "HUMIDITY TO LOCATION" << endl;
+  i++;
+
+  for(; !lineas[i].empty(); i++){
+    cout << lineas[i] << endl;
+  }
+
 
   return 0;
 }
