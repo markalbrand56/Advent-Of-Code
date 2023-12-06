@@ -22,3 +22,5 @@
 ### Day 2: Cube Conundrum ⭐⭐ [<img align="left" alt="Kotlin" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" style="padding-right:10px;" />]()
           
 ### Day 3: Gear Ratios ⭐⭐ [<img align="left" alt="JS" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" style="padding-right:10px;" />]()
+
+### Day 4: Scratchcards ⭐⭐ [<img align="left" alt="Go" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" style="padding-right:10px;" />]()
