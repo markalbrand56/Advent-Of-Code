@@ -17,7 +17,12 @@ map<int, int> build_map(vector<string> &vec) {
 
     stream >> dst >> src >> rge;
 
-    cout << "dst: " << dst << " src: " << src << " range: " << rge << endl;
+    for (int i = 0; i < rge; i++){
+      range[src] = dst;
+      //cout << src << "->" << dst << endl;
+      src++;
+      dst++;
+    }
   }
 
 
@@ -42,17 +47,26 @@ int main() {
   }
   file.close();
 
-  for (const auto& l : lineas) {
+  // División de líneas
+  string seeds_input = lineas[0];  // lineas[1]: ""
+  size_t pos = seeds_input.find("seeds: ");
+  seeds_input = seeds_input.substr(pos + 7);
 
-    if(l.empty()){  // Lineas en blanco
-      cout << "Vacio" << endl;
-    } else {
-      cout << l << endl;
-    }
+  istringstream stream(seeds_input);
+  vector<int> seeds;
+
+  int numero;
+
+        // Leer los números de la cadena y almacenarlos en el vector
+  while (stream >> numero) {
+    seeds.push_back(numero);
   }
 
-  // División de líneas
-  string seeds = lineas[0];  // lineas[1]: ""
+  for (const auto& num : seeds) {
+    std::cout << "Seed: " << num << endl;
+  }
+
+
   vector<string> seed_soil;
   int i = 3;
 
@@ -126,6 +140,28 @@ int main() {
   map<int, int> r_light_temp = build_map(light_temp);
   map<int, int> r_temp_humidity = build_map(temp_humidity);
   map<int, int> r_humidity_location = build_map(humidity_location);
+
+  vector<int> results;
+
+  for (const auto& num: seeds){
+    int soil;
+    int fertilizer;
+    int water;
+    int light;
+    int temp;
+    int humidity;
+    int location;
+
+    soil = (r_seed_soil.count(num) > 0) ? r_seed_soil[num] : num;
+    fertilizer = (r_soil_fertilizer.count(soil) > 0) ? r_soil_fertilizer[soil] : soil;
+    water = (r_fertilizer_water.count(fertilizer) > 0) ? r_fertilizer_water[fertilizer] : fertilizer;
+    light = (r_water_light.count(water) > 0) ? r_water_light[water] : water;
+    temp = (r_light_temp.count(light) > 0) ? r_light_temp[light] : light;
+    humidity = (r_temp_humidity.count(temp) > 0) ? r_temp_humidity[temp] : temp;
+    location = (r_humidity_location.count(humidity) > 0) ? r_humidity_location[humidity] : humidity;
+
+    cout << "seed " << num << " soil " << soil << " fertilizer " << fertilizer << " water " << water << " light " << light << " temp " << temp << " humidity " << humidity << " location " << location << endl;
+  }
 
   return 0;
 }
