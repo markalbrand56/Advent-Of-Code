@@ -12,6 +12,7 @@ using namespace std;
 map<long long, long long> build_map(const vector<string> &vec) {
   map<long long, long long> range;
 
+  int x = 1;
   for(const auto& line: vec){
     // DST | SRC | RANGE
     long long dst, src, rge = 0;
@@ -19,7 +20,7 @@ map<long long, long long> build_map(const vector<string> &vec) {
 
     stream >> dst >> src >> rge;
 
-    cout << "dst " << dst << " src " << src << " rge " << rge << endl;
+    cout << "line " << x << "/" << vec.size() << " dst " << dst << " src " << src << " rge " << rge << endl;
 
     for (long long i = 0; i < rge; i++){
       range[src] = dst;
@@ -27,6 +28,7 @@ map<long long, long long> build_map(const vector<string> &vec) {
       src++;
       dst++;
     }
+	x++;
   }
 
 
