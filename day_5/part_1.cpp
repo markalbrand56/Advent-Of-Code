@@ -2,6 +2,7 @@
 #include <iostream>
 #include <map>
 #include <ostream>
+#include <sstream>
 #include <string>
 #include <vector>
 using namespace std;
@@ -9,7 +10,16 @@ using namespace std;
 map<int, int> build_map(vector<string> &vec) {
   map<int, int> range;
 
-  // DST | SRC | RANGE
+  for(const auto& line: vec){
+    // DST | SRC | RANGE
+    int dst, src, rge = 0;
+    istringstream stream(line);
+
+    stream >> dst >> src >> rge;
+
+    cout << "dst: " << dst << " src: " << src << " range: " << rge << endl;
+  }
+
 
   return range;
 }
