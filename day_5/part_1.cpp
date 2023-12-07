@@ -45,7 +45,7 @@ int main() {
   auto start = std::chrono::high_resolution_clock::now();
 
 
-  ifstream file("input.txt");
+  ifstream file("sample.txt");
 
   if(!file.is_open()){
     cerr << "Error al abrir el archivo" << endl;
@@ -155,19 +155,19 @@ int main() {
 
     std::thread t1(build_map_thread, seed_soil, std::ref(r_seed_soil));
     std::thread t2(build_map_thread, soil_fertilizer, std::ref(r_soil_fertilizer));
-    std::thread t3(build_map_thread, fertilizer_water, std::ref(r_fertilizer_water));
-    std::thread t4(build_map_thread, water_light, std::ref(r_water_light));
-    std::thread t5(build_map_thread, light_temp, std::ref(r_light_temp));
-    std::thread t6(build_map_thread, temp_humidity, std::ref(r_temp_humidity));
-    std::thread t7(build_map_thread, humidity_location, std::ref(r_humidity_location));
-
     t1.join();
     t2.join();
+    std::thread t3(build_map_thread, fertilizer_water, std::ref(r_fertilizer_water));
+    std::thread t4(build_map_thread, water_light, std::ref(r_water_light));
     t3.join();
     t4.join();
+    std::thread t5(build_map_thread, light_temp, std::ref(r_light_temp));
+    std::thread t6(build_map_thread, temp_humidity, std::ref(r_temp_humidity));
     t5.join();
     t6.join();
+    std::thread t7(build_map_thread, humidity_location, std::ref(r_humidity_location));
     t7.join();
+
 
   vector<long long> results;
 
