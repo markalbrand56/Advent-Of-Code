@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <thread>
+#include <chrono>
 using namespace std;
 
 map<long long, long long> build_map(const vector<string> &vec) {
@@ -41,8 +42,9 @@ void build_map_thread(const vector<string> &vec, map<long long, long long>& resu
 
 int main() {
   cout << "Hello World" << endl;
+  auto start = std::chrono::high_resolution_clock::now();
 
-  
+
   ifstream file("input.txt");
 
   if(!file.is_open()){
@@ -195,6 +197,11 @@ int main() {
   auto min = min_element(results.begin(), results.end());
 
   cout << "Lowest location: " << *min << endl;
+
+  auto stop = std::chrono::high_resolution_clock::now();
+  std::chrono::duration<double, std::ratio<60>> duration = stop - start;
+
+  cout << "Time: " << duration.count() << " minutes" << endl;
 
   return 0;
 }
