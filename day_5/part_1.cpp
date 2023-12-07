@@ -8,17 +8,19 @@
 #include <vector>
 using namespace std;
 
-map<int, int> build_map(vector<string> &vec) {
-  map<int, int> range;
+map<long long, long long> build_map(const vector<string> &vec) {
+  map<long long, long long> range;
 
   for(const auto& line: vec){
     // DST | SRC | RANGE
-    int dst, src, rge = 0;
+    long long dst, src, rge = 0;
     istringstream stream(line);
 
     stream >> dst >> src >> rge;
 
-    for (int i = 0; i < rge; i++){
+    cout << "dst " << dst << " src " << src << " rge " << rge << endl;
+
+    for (long long i = 0; i < rge; i++){
       range[src] = dst;
       //cout << src << "->" << dst << endl;
       src++;
@@ -134,31 +136,31 @@ int main() {
   }
 
   // Construir maps
-  map<int, int> r_seed_soil = build_map(seed_soil);
+  map<long long, long long> r_seed_soil = build_map(seed_soil);
   cout<< "Constructed" << endl;
-  map<int, int> r_soil_fertilizer = build_map(soil_fertilizer);
+  map<long long, long long> r_soil_fertilizer = build_map(soil_fertilizer);
   cout<< "Constructed" << endl;
-  map<int, int> r_fertilizer_water = build_map(fertilizer_water);
+  map<long long, long long> r_fertilizer_water = build_map(fertilizer_water);
   cout<< "Constructed" << endl;
-  map<int, int> r_water_light = build_map(water_light);
+  map<long long, long long> r_water_light = build_map(water_light);
   cout<< "Constructed" << endl;
-  map<int, int> r_light_temp = build_map(light_temp);
+  map<long long, long long> r_light_temp = build_map(light_temp);
   cout<< "Constructed" << endl;
-  map<int, int> r_temp_humidity = build_map(temp_humidity);
+  map<long long, long long> r_temp_humidity = build_map(temp_humidity);
   cout<< "Constructed" << endl;
-  map<int, int> r_humidity_location = build_map(humidity_location);
+  map<long long, long long> r_humidity_location = build_map(humidity_location);
   cout<< "Constructed" << endl;
 
-  vector<int> results;
+  vector<long long> results;
 
   for (const auto& num: seeds){
-    int soil;
-    int fertilizer;
-    int water;
-    int light;
-    int temp;
-    int humidity;
-    int location;
+    long long soil;
+    long long fertilizer;
+    long long water;
+    long long light;
+    long long temp;
+    long long humidity;
+    long long location;
 
     soil = (r_seed_soil.count(num) > 0) ? r_seed_soil[num] : num;
     fertilizer = (r_soil_fertilizer.count(soil) > 0) ? r_soil_fertilizer[soil] : soil;
@@ -168,11 +170,11 @@ int main() {
     humidity = (r_temp_humidity.count(temp) > 0) ? r_temp_humidity[temp] : temp;
     location = (r_humidity_location.count(humidity) > 0) ? r_humidity_location[humidity] : humidity;
 
-    //cout << "seed " << num << " soil " << soil << " fertilizer " << fertilizer << " water " << water << " light " << light << " temp " << temp << " humidity " << humidity << 
-      //" location " << location << endl;
+    //cout << "seed " << num << " soil " << soil << " fertilizer " << fertilizer << " water " << water << " light " << light << " temp " << temp << " humidity " << humidity <<
+    //" location " << location << endl;
 
     results.push_back(location);
-  }
+}
 
   auto min = min_element(results.begin(), results.end());
 
