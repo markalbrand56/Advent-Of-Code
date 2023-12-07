@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <thread>
 using namespace std;
 
 map<long long, long long> build_map(const vector<string> &vec) {
@@ -30,6 +31,10 @@ map<long long, long long> build_map(const vector<string> &vec) {
 
 
   return range;
+}
+
+void build_map_thread(const vector<string> &vec, map<long long, long long>& result_map) {
+    result_map = build_map(vec);
 }
 
 int main() {
@@ -136,20 +141,29 @@ int main() {
   }
 
   // Construir maps
-  map<long long, long long> r_seed_soil = build_map(seed_soil);
-  cout<< "Constructed" << endl;
-  map<long long, long long> r_soil_fertilizer = build_map(soil_fertilizer);
-  cout<< "Constructed" << endl;
-  map<long long, long long> r_fertilizer_water = build_map(fertilizer_water);
-  cout<< "Constructed" << endl;
-  map<long long, long long> r_water_light = build_map(water_light);
-  cout<< "Constructed" << endl;
-  map<long long, long long> r_light_temp = build_map(light_temp);
-  cout<< "Constructed" << endl;
-  map<long long, long long> r_temp_humidity = build_map(temp_humidity);
-  cout<< "Constructed" << endl;
-  map<long long, long long> r_humidity_location = build_map(humidity_location);
-  cout<< "Constructed" << endl;
+    map<long long, long long> r_seed_soil;
+    map<long long, long long> r_soil_fertilizer;
+    map<long long, long long> r_fertilizer_water;
+    map<long long, long long> r_water_light;
+    map<long long, long long> r_light_temp;
+    map<long long, long long> r_temp_humidity;
+    map<long long, long long> r_humidity_location;
+
+    std::thread t1(build_map_thread, seed_soil, std::ref(r_seed_soil));
+    std::thread t2(build_map_thread, soil_fertilizer, std::ref(r_soil_fertilizer));
+    std::thread t3(build_map_thread, fertilizer_water, std::ref(r_fertilizer_water));
+    std::thread t4(build_map_thread, water_light, std::ref(r_water_light));
+    std::thread t5(build_map_thread, light_temp, std::ref(r_light_temp));
+    std::thread t6(build_map_thread, temp_humidity, std::ref(r_temp_humidity));
+    std::thread t7(build_map_thread, humidity_location, std::ref(r_humidity_location));
+
+    t1.join();
+    t2.join();
+    t3.join();
+    t4.join();
+    t5.join();
+    t6.join();
+    t7.join();
 
   vector<long long> results;
 
