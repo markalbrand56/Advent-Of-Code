@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <map>
@@ -33,7 +34,7 @@ int main() {
   cout << "Hello World" << endl;
 
   
-  ifstream file("sample.txt");
+  ifstream file("input.txt");
 
   if(!file.is_open()){
     cerr << "Error al abrir el archivo" << endl;
@@ -134,12 +135,19 @@ int main() {
 
   // Construir maps
   map<int, int> r_seed_soil = build_map(seed_soil);
+  cout<< "Constructed" << endl;
   map<int, int> r_soil_fertilizer = build_map(soil_fertilizer);
+  cout<< "Constructed" << endl;
   map<int, int> r_fertilizer_water = build_map(fertilizer_water);
+  cout<< "Constructed" << endl;
   map<int, int> r_water_light = build_map(water_light);
+  cout<< "Constructed" << endl;
   map<int, int> r_light_temp = build_map(light_temp);
+  cout<< "Constructed" << endl;
   map<int, int> r_temp_humidity = build_map(temp_humidity);
+  cout<< "Constructed" << endl;
   map<int, int> r_humidity_location = build_map(humidity_location);
+  cout<< "Constructed" << endl;
 
   vector<int> results;
 
@@ -160,8 +168,15 @@ int main() {
     humidity = (r_temp_humidity.count(temp) > 0) ? r_temp_humidity[temp] : temp;
     location = (r_humidity_location.count(humidity) > 0) ? r_humidity_location[humidity] : humidity;
 
-    cout << "seed " << num << " soil " << soil << " fertilizer " << fertilizer << " water " << water << " light " << light << " temp " << temp << " humidity " << humidity << " location " << location << endl;
+    //cout << "seed " << num << " soil " << soil << " fertilizer " << fertilizer << " water " << water << " light " << light << " temp " << temp << " humidity " << humidity << 
+      //" location " << location << endl;
+
+    results.push_back(location);
   }
+
+  auto min = min_element(results.begin(), results.end());
+
+  cout << "Lowest location: " << *min << endl;
 
   return 0;
 }
