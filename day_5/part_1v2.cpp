@@ -74,7 +74,7 @@ int main() {
 		seed_soil.push_back(lineas[i]);
 	}
 
-	cout << "SOILD TO FERTILIZER" << endl;
+	cout << "SOIL TO FERTILIZER" << endl;
 	vector<string> soil_fertilizer;
 	i+=2;
 
