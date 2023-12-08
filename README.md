@@ -29,3 +29,5 @@
 > [!NOTE]
 > De la parte 1 a la parte 2 pasan de procesarse 20 semillas a procesarse literalmente casi dos mil millones de semillas. Mi computadora pasó más de dos horas ejecutando el programa y no logró terminar (con multithreading implementado).
 > Tengo confianza de que el algoritmo está bien pero hasta el momento no he terminado la ejecución, otro día lo dejaré corriendo para ver si me da la respuesta correcta.
+
+### Day 6: Wait For It ⭐⭐ [<img align="left" alt="Go" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg" style="padding-right:10px;" />]()
