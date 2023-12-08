@@ -36,9 +36,9 @@ impl Hand {
             4 => self.type_hand = HandType::FourOfKind,
             3 => {
                 if counts.len() == 2 {
-                    self.type_hand = HandType::FullHouse;
+                    self.type_hand = HandType::FullHouse;  // Si solo hay dos cartas, significa que hay un par
                 } else {
-                    self.type_hand = HandType::ThreeOfKind;
+                    self.type_hand = HandType::ThreeOfKind;  // Si hay más, solo es un trío
                 }
             }
             2 => {
