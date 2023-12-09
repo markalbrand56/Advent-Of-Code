@@ -476,45 +476,15 @@ pub fn part_1(){
         ranked_hands.insert(rank, hand.clone());
     }
 
-    // print key, value of ranked_hands
+    // Calculate winnings
+    let mut winnings = 0;
     for key in ranked_hands.keys().sorted() {
         let hand = ranked_hands.get(key).unwrap();
         println!("{key} {} {} {:?}", hand.hand, hand.bet, hand.type_hand);
-
-    }
-}
-
-fn find_pairs(hand: &String) -> (char, char) {
-    let mut counts = HashMap::new();
-    let mut pair1 = ' ';
-    let mut pair2 = ' ';
-
-    for c in hand.chars() {
-        let counter = counts.entry(c).or_insert(0);
-        *counter += 1;
+        winnings += (key * hand.bet);
     }
 
-    for (key, value) in &counts {
-        if *value == 2 {
-            if pair1 == ' ' {
-                pair1 = *key;
-            } else {
-                pair2 = *key;
-            }
-        }
-    }
-
-    (pair1, pair2)
-}
-
-// Function to find the remaining card in a hand
-fn find_remaining_card(hand: &String, pair1: char, pair2: char) -> char {
-    for c in hand.chars() {
-        if c != pair1 && c != pair2 {
-            return c;
-        }
-    }
-    ' '
+    println!("Winnings: {winnings}")
 }
 
 // Function to compare cards based on their rank
