@@ -1,5 +1,6 @@
 use std::collections::HashMap;
 use std::fs;
+use itertools::Itertools;
 
 #[derive(Debug, Clone)]
 enum HandType{
@@ -354,9 +355,75 @@ pub fn part_1(){
         ranked_hands.insert(rank, hand.clone());
     }
 
+    // Four of a kind
+    four_of_kinds.sort_by(|a, b| {
+        // Find the four of a kind and the other card
+        let mut a_four = ' ';
+        let mut a_other = ' ';
+        let mut b_four = ' ';
+        let mut b_other = ' ';
+
+        let mut counts = HashMap::new();
+        for c in a.hand.chars() {
+            let counter = counts.entry(c).or_insert(0);
+            *counter += 1;
+        }
+        for (key, value) in &counts {
+            if *value == 4 {
+                a_four = *key;
+            } else {
+                a_other = *key;
+            }
+        }
+
+        counts = HashMap::new();
+        for c in b.hand.chars() {
+            let counter = counts.entry(c).or_insert(0);
+            *counter += 1;
+        }
+        for (key, value) in &counts {
+            if *value == 4 {
+                b_four = *key;
+            } else {
+                b_other = *key;
+            }
+        }
+
+        // Compare the four of a kind
+        let four_comparison = compare_cards(a_four, b_four);
+        if four_comparison != std::cmp::Ordering::Equal {
+            return four_comparison;
+        }
+
+        // Compare the other card
+        compare_cards(a_other, b_other)
+    });
+
+    // Assign rank to each hand
+    for hand in four_of_kinds {
+        rank += 1;
+        ranked_hands.insert(rank, hand.clone());
+    }
+
+    // Five of a kind
+    five_of_kinds.sort_by(|a, b| {
+        // Compare the hand
+        let a_values: Vec<i32> = a.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
+        let b_values: Vec<i32> = b.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
+        a_values.cmp(&b_values)
+    });
+
+    // Assign rank to each hand
+    for hand in five_of_kinds {
+        rank += 1;
+        ranked_hands.insert(rank, hand.clone());
+    }
+
     // print key, value of ranked_hands
-    for (key, value) in &ranked_hands {
-        println!("{}: {:?}", key, value);
+    for key in ranked_hands.keys().sorted() {
+        let hand = ranked_hands.get(key).unwrap();
+        println!("{key} {} {} {:?}", hand.hand, hand.bet, hand.type_hand);
+
     }
 }
 
