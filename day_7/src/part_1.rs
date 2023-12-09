@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use std::fs;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 enum HandType{
     FiveOfKind,
     FourOfKind,
@@ -13,10 +13,10 @@ enum HandType{
     None,
 }
 
+#[derive(Debug, Clone)]
 struct Hand {
     hand: String,
     bet: i32,
-    rank: i32,
     type_hand: HandType,
 }
 
@@ -51,28 +51,25 @@ impl Hand {
             _ => self.type_hand = HandType::High,
         }
     }
-    fn set_rank(&mut self, r: i32){
-        self.rank = r
-    }
 }
 
 pub fn part_1(){
     println!("Part 1");
     let order = HashMap::from([
-        ("A", 14),
-        ("K", 13),
-        ("Q", 12),
-        ("J", 11),
-        ("T", 10),
-        ("9", 9),
-        ("8", 8),
-        ("7", 7),
-        ("6", 6),
-        ("5", 5),
-        ("4", 4),
-        ("3", 3),
-        ("2", 2),
-        ("1", 1)
+        ('A', 14),
+        ('K', 13),
+        ('Q', 12),
+        ('J', 11),
+        ('T', 10),
+        ('9', 9),
+        ('8', 8),
+        ('7', 7),
+        ('6', 6),
+        ('5', 5),
+        ('4', 4),
+        ('3', 3),
+        ('2', 2),
+        ('1', 1),
     ]);
 
     let contents = fs::read_to_string("src/sample.txt")
@@ -91,7 +88,6 @@ pub fn part_1(){
             let mut h = Hand{
                 hand: String::from(key),
                 bet: value,
-                rank: 0,
                 type_hand: HandType::None,
             };
             h.determine_hand_type();
@@ -99,6 +95,7 @@ pub fn part_1(){
         }
     }
 
+    let mut ranked_hands: HashMap<i32, Hand> = HashMap::new();
     let mut five_of_kinds = Vec::new();
     let mut four_of_kinds = Vec::new();
     let mut full_houses = Vec::new();
@@ -122,9 +119,20 @@ pub fn part_1(){
     }
 
     let mut rank = 0;  // The strongest hand has the highest rank
+    highs.sort_by(|a, b| {
+        let a_values: Vec<i32> = a.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
+        let b_values: Vec<i32> = b.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
+        a_values.cmp(&b_values)
+    });
 
-    for hand in &mut highs {
-        // ordenar las manos de más debil a mas fuerte
-        // A > K > Q > ... > 1
+    // Assign rank to each hand
+    for hand in highs {
+        rank += 1;
+        ranked_hands.insert(rank, hand.clone());
+    }
+
+    // print key, value of ranked_hands
+    for (key, value) in &ranked_hands {
+        println!("{}: {:?}", key, value);
     }
 }
