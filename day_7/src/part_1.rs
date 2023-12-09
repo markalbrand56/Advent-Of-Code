@@ -198,10 +198,6 @@ pub fn part_1(){
 
     // Two pair
     two_pairs.sort_by(|a, b| {
-        // each hand contains two pairs and one other card
-        // find the pairs and the other cards
-        // the hand with the highest pair win
-        // if the pairs are equal, the hand with the highest other card win
         // so KKQQ3 > KKQQ1 > JJAAK
 
         let mut a_pair1 = ' ';
@@ -251,22 +247,23 @@ pub fn part_1(){
         let b_pair1_value = *order.get(&b_pair1).unwrap_or(&0);
         let b_pair2_value = *order.get(&b_pair2).unwrap_or(&0);
 
-        let a_higher = if a_pair1_value > a_pair2_value { a_pair1_value } else { a_pair2_value };
-        let b_higher = if b_pair1_value > b_pair2_value { b_pair1_value } else { b_pair2_value };
+        let a_higher = if a_pair1_value > a_pair2_value { a_pair1_value } else { a_pair2_value };  // Find the higher pair
+        let b_higher = if b_pair1_value > b_pair2_value { b_pair1_value } else { b_pair2_value };  // Find the higher pair
 
         let pair_comparison = a_higher.cmp(&b_higher);
         if pair_comparison != std::cmp::Ordering::Equal {
             return pair_comparison;
-        } else {
+        } else {  // If the higher pairs are equal, compare the lower pairs
             let a_lower = if a_pair1_value < a_pair2_value { a_pair1_value } else { a_pair2_value };
             let b_lower = if b_pair1_value < b_pair2_value { b_pair1_value } else { b_pair2_value };
+
             let pair_comparison = a_lower.cmp(&b_lower);
             if pair_comparison != std::cmp::Ordering::Equal {
                 return pair_comparison;
             }
         }
 
-        // compare the other cards
+        // if both pairs are equal, compare the other card
         let a_other_value = *order.get(&a_other).unwrap_or(&0);
         let b_other_value = *order.get(&b_other).unwrap_or(&0);
         let other_comparison = a_other_value.cmp(&b_other_value);
