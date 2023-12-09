@@ -51,10 +51,29 @@ impl Hand {
             _ => self.type_hand = HandType::High,
         }
     }
+    fn set_rank(&mut self, r: i32){
+        self.rank = r
+    }
 }
 
 pub fn part_1(){
     println!("Part 1");
+    let order = HashMap::from([
+        ("A", 14),
+        ("K", 13),
+        ("Q", 12),
+        ("J", 11),
+        ("T", 10),
+        ("9", 9),
+        ("8", 8),
+        ("7", 7),
+        ("6", 6),
+        ("5", 5),
+        ("4", 4),
+        ("3", 3),
+        ("2", 2),
+        ("1", 1)
+    ]);
 
     let contents = fs::read_to_string("src/sample.txt")
         .expect("Debería abrir el archivo");
@@ -65,7 +84,6 @@ pub fn part_1(){
     for line in lines {
         let words: Vec<&str> = line.split_whitespace().collect();
 
-        // Asegúrate de que haya al menos dos palabras en la línea
         if words.len() >= 2 {
             let key = words[0];
             let value = words[1].parse::<i32>().unwrap();
@@ -81,7 +99,32 @@ pub fn part_1(){
         }
     }
 
+    let mut five_of_kinds = Vec::new();
+    let mut four_of_kinds = Vec::new();
+    let mut full_houses = Vec::new();
+    let mut three_of_kinds = Vec::new();
+    let mut two_pairs = Vec::new();
+    let mut one_pairs = Vec::new();
+    let mut highs = Vec::new();
+
     for hand in &hands {
         println!("{} {} {:?}", hand.hand, hand.bet, hand.type_hand);
+        match hand.type_hand {
+            HandType::FiveOfKind => five_of_kinds.push(hand),
+            HandType::FourOfKind => four_of_kinds.push(hand),
+            HandType::FullHouse => full_houses.push(hand),
+            HandType::ThreeOfKind => three_of_kinds.push(hand),
+            HandType::TwoPair => two_pairs.push(hand),
+            HandType::OnePair => one_pairs.push(hand),
+            HandType::High => highs.push(hand),
+            _ => (),
+        }
+    }
+
+    let mut rank = 0;  // The strongest hand has the highest rank
+
+    for hand in &mut highs {
+        // ordenar las manos de más debil a mas fuerte
+        // A > K > Q > ... > 1
     }
 }
