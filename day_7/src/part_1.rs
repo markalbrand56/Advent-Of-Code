@@ -304,6 +304,56 @@ pub fn part_1(){
         ranked_hands.insert(rank, hand.clone());
     }
 
+    // Full house
+    full_houses.sort_by(|a, b| {
+        // Find the three of a kind and the pair
+        let mut a_three = ' ';
+        let mut a_pair = ' ';
+        let mut b_three = ' ';
+        let mut b_pair = ' ';
+
+        let mut counts = HashMap::new();
+        for c in a.hand.chars() {
+            let counter = counts.entry(c).or_insert(0);
+            *counter += 1;
+        }
+        for (key, value) in &counts {
+            if *value == 3 {
+                a_three = *key;
+            } else {
+                a_pair = *key;
+            }
+        }
+
+        counts = HashMap::new();
+        for c in b.hand.chars() {
+            let counter = counts.entry(c).or_insert(0);
+            *counter += 1;
+        }
+        for (key, value) in &counts {
+            if *value == 3 {
+                b_three = *key;
+            } else {
+                b_pair = *key;
+            }
+        }
+
+        // Compare the three of a kind
+        let three_comparison = compare_cards(a_three, b_three);
+        if three_comparison != std::cmp::Ordering::Equal {
+            return three_comparison;
+        }
+
+        // Compare the pair
+        compare_cards(a_pair, b_pair)
+    });
+
+    // Assign rank to each hand
+    for hand in full_houses {
+        rank += 1;
+        ranked_hands.insert(rank, hand.clone());
+    }
+
     // print key, value of ranked_hands
     for (key, value) in &ranked_hands {
         println!("{}: {:?}", key, value);
