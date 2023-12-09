@@ -106,7 +106,7 @@ pub fn part_1(){
     let mut highs = Vec::new();
 
     for hand in &hands {
-        println!("{} {} {:?}", hand.hand, hand.bet, hand.type_hand);
+        // println!("{} {} {:?}", hand.hand, hand.bet, hand.type_hand);
         match hand.type_hand {
             HandType::FiveOfKind => five_of_kinds.push(hand),
             HandType::FourOfKind => four_of_kinds.push(hand),
@@ -138,9 +138,13 @@ pub fn part_1(){
     one_pairs.sort_by(|a, b| {
         // find the pair
         let mut a_pair = ' ';
-        let mut a_other = ' ';
+        let mut a_third = ' ';
+        let mut a_fourth = ' ';
+        let mut a_fifth = ' ';
         let mut b_pair = ' ';
-        let mut b_other = ' ';
+        let mut b_third = ' ';
+        let mut b_fourth = ' ';
+        let mut b_fifth = ' ';
 
         let mut counts = HashMap::new();
         for c in a.hand.chars() {
@@ -151,7 +155,13 @@ pub fn part_1(){
             if *value == 2 {
                 a_pair = *key;
             } else {
-                a_other = *key;
+                if a_third == ' ' {
+                    a_third = *key;
+                } else if a_fourth == ' ' {
+                    a_fourth = *key;
+                } else {
+                    a_fifth = *key;
+                }
             }
         }
 
@@ -164,30 +174,121 @@ pub fn part_1(){
             if *value == 2 {
                 b_pair = *key;
             } else {
-                b_other = *key;
+                if b_third == ' ' {
+                    b_third = *key;
+                } else if b_fourth == ' ' {
+                    b_fourth = *key;
+                } else {
+                    b_fifth = *key;
+                }
             }
         }
 
-        // compare the pair
-        let a_pair_value = *order.get(&a_pair).unwrap_or(&0);
-        let b_pair_value = *order.get(&b_pair).unwrap_or(&0);
-        let pair_comparison = a_pair_value.cmp(&b_pair_value);
+        // Compare the pair
+        let pair_comparison = compare_cards(a_pair, b_pair);
         if pair_comparison != std::cmp::Ordering::Equal {
             return pair_comparison;
         }
 
-        // compare the other cards
-        let a_other_value = *order.get(&a_other).unwrap_or(&0);
-        let b_other_value = *order.get(&b_other).unwrap_or(&0);
-        let other_comparison = a_other_value.cmp(&b_other_value);
-        if other_comparison != std::cmp::Ordering::Equal {
-            return other_comparison;
+        // Get the highest of the three remaining cards
+        let mut a_third_value = *order.get(&a_third).unwrap_or(&0);
+        let mut a_fourth_value = *order.get(&a_fourth).unwrap_or(&0);
+        let mut a_fifth_value = *order.get(&a_fifth).unwrap_or(&0);
+        let mut b_third_value = *order.get(&b_third).unwrap_or(&0);
+        let mut b_fourth_value = *order.get(&b_fourth).unwrap_or(&0);
+        let mut b_fifth_value = *order.get(&b_fifth).unwrap_or(&0);
+
+        let mut a_higher: i32 = 0;
+        let mut b_higher: i32 = 0;
+
+        if a_third_value > a_fourth_value && a_third_value > a_fifth_value {
+            a_higher = a_third_value;
+            a_third_value = 0;
+        } else if a_fourth_value > a_third_value && a_fourth_value > a_fifth_value {
+            a_higher = a_fourth_value;
+            a_fourth_value = 0;
+        } else {
+            a_higher = a_fifth_value;
+            a_fifth_value = 0;
         }
 
-        // compare the hand
-        let a_values: Vec<i32> = a.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
-        let b_values: Vec<i32> = b.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
-        a_values.cmp(&b_values)
+        if b_third_value > b_fourth_value && b_third_value > b_fifth_value {
+            b_higher = b_third_value;
+            b_third_value = 0;
+        } else if b_fourth_value > b_third_value && b_fourth_value > b_fifth_value {
+            b_higher = b_fourth_value;
+            b_fourth_value = 0;
+        } else {
+            b_higher = b_fifth_value;
+            b_fifth_value = 0;
+        }
+
+        let higher_comparison = a_higher.cmp(&b_higher);
+        if higher_comparison != std::cmp::Ordering::Equal {
+            return higher_comparison;
+        }
+
+        // Get the second highest of the three remaining cards
+        let mut a_second: i32 = 0;
+        let mut b_second: i32 = 0;
+
+        if a_third_value > a_fourth_value && a_third_value > a_fifth_value {
+            a_second = a_third_value;
+            a_third_value = 0;
+        } else if a_fourth_value > a_third_value && a_fourth_value > a_fifth_value {
+            a_second = a_fourth_value;
+            a_fourth_value = 0;
+        } else {
+            a_second = a_fifth_value;
+            a_fifth_value = 0;
+        }
+
+        if b_third_value > b_fourth_value && b_third_value > b_fifth_value {
+            b_second = b_third_value;
+            b_third_value = 0;
+        } else if b_fourth_value > b_third_value && b_fourth_value > b_fifth_value {
+            b_second = b_fourth_value;
+            b_fourth_value = 0;
+        } else {
+            b_second = b_fifth_value;
+            b_fifth_value = 0;
+        }
+
+        let second_comparison = a_second.cmp(&b_second);
+        if second_comparison != std::cmp::Ordering::Equal {
+            return second_comparison;
+        }
+
+        // Get the third highest of the three remaining cards
+        let mut a_third: i32 = 0;
+        let mut b_third: i32 = 0;
+
+        if a_third_value > a_fourth_value && a_third_value > a_fifth_value {
+            a_third = a_third_value;
+            a_third_value = 0;
+        } else if a_fourth_value > a_third_value && a_fourth_value > a_fifth_value {
+            a_third = a_fourth_value;
+            a_fourth_value = 0;
+        } else {
+            a_third = a_fifth_value;
+            a_fifth_value = 0;
+        }
+
+        if b_third_value > b_fourth_value && b_third_value > b_fifth_value {
+            b_third = b_third_value;
+            b_third_value = 0;
+        } else if b_fourth_value > b_third_value && b_fourth_value > b_fifth_value {
+            b_third = b_fourth_value;
+            b_fourth_value = 0;
+        } else {
+            b_third = b_fifth_value;
+            b_fifth_value = 0;
+        }
+
+        let third_comparison = a_third.cmp(&b_third);
+
+        return third_comparison;
+
     });
 
     // Assign rank to each hand
