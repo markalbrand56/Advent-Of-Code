@@ -195,8 +195,175 @@ pub fn part_1(){
         ranked_hands.insert(rank, hand.clone());
     }
 
+    // Two pair
+    two_pairs.sort_by(|a, b| {
+        // Find the pairs and the other cards
+        let (a_pair1, a_pair2) = find_pairs(&a.hand);
+        let (b_pair1, b_pair2) = find_pairs(&b.hand);
+
+        // Compare the higher pair
+        let pair_comparison = compare_cards(a_pair2, b_pair2);
+        if pair_comparison != std::cmp::Ordering::Equal {
+            return pair_comparison;
+        }
+
+        // Compare the lower pair
+        let lower_pair_comparison = compare_cards(a_pair1, b_pair1);
+        if lower_pair_comparison != std::cmp::Ordering::Equal {
+            return lower_pair_comparison;
+        }
+
+        // Compare the remaining card
+        let a_remaining = find_remaining_card(&a.hand, a_pair1, a_pair2);
+        let b_remaining = find_remaining_card(&b.hand, b_pair1, b_pair2);
+
+        compare_cards(a_remaining, b_remaining)
+    });
+
+    // Assign rank to each hand
+    for hand in two_pairs {
+        rank += 1;
+        ranked_hands.insert(rank, hand.clone());
+    }
+
+    // Three of a kind
+    three_of_kinds.sort_by(|a, b| {
+        // Find the three of a kind and the other cards
+        let mut a_three = ' ';
+        let mut a_other1 = ' ';
+        let mut a_other2 = ' ';
+        let mut b_three = ' ';
+        let mut b_other1 = ' ';
+        let mut b_other2 = ' ';
+
+        let mut counts = HashMap::new();
+        for c in a.hand.chars() {
+            let counter = counts.entry(c).or_insert(0);
+            *counter += 1;
+        }
+        for (key, value) in &counts {
+            if *value == 3 {
+                a_three = *key;
+            } else {
+                if a_other1 == ' ' {
+                    a_other1 = *key;
+                } else {
+                    a_other2 = *key;
+                }
+            }
+        }
+
+        counts = HashMap::new();
+        for c in b.hand.chars() {
+            let counter = counts.entry(c).or_insert(0);
+            *counter += 1;
+        }
+        for (key, value) in &counts {
+            if *value == 3 {
+                b_three = *key;
+            } else {
+                if b_other1 == ' ' {
+                    b_other1 = *key;
+                } else {
+                    b_other2 = *key;
+                }
+            }
+        }
+
+        // Compare the three of a kind
+        let three_comparison = compare_cards(a_three, b_three);
+        if three_comparison != std::cmp::Ordering::Equal {
+            return three_comparison;
+        }
+
+        // Compare the other cards
+        let a_other1_value = *order.get(&a_other1).unwrap_or(&0);
+        let a_other2_value = *order.get(&a_other2).unwrap_or(&0);
+        let b_other1_value = *order.get(&b_other1).unwrap_or(&0);
+        let b_other2_value = *order.get(&b_other2).unwrap_or(&0);
+
+        let a_other_comparison = a_other1_value.cmp(&a_other2_value);
+        let b_other_comparison = b_other1_value.cmp(&b_other2_value);
+
+        if a_other_comparison != std::cmp::Ordering::Equal {
+            return a_other_comparison;
+        }
+        if b_other_comparison != std::cmp::Ordering::Equal {
+            return b_other_comparison;
+        }
+
+        // Compare the hand
+        let a_values: Vec<i32> = a.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
+        let b_values: Vec<i32> = b.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
+        a_values.cmp(&b_values)
+    });
+
+    // Assign rank to each hand
+    for hand in three_of_kinds {
+        rank += 1;
+        ranked_hands.insert(rank, hand.clone());
+    }
+
     // print key, value of ranked_hands
     for (key, value) in &ranked_hands {
         println!("{}: {:?}", key, value);
     }
+}
+
+fn find_pairs(hand: &String) -> (char, char) {
+    let mut counts = HashMap::new();
+    let mut pair1 = ' ';
+    let mut pair2 = ' ';
+
+    for c in hand.chars() {
+        let counter = counts.entry(c).or_insert(0);
+        *counter += 1;
+    }
+
+    for (key, value) in &counts {
+        if *value == 2 {
+            if pair1 == ' ' {
+                pair1 = *key;
+            } else {
+                pair2 = *key;
+            }
+        }
+    }
+
+    (pair1, pair2)
+}
+
+// Function to find the remaining card in a hand
+fn find_remaining_card(hand: &String, pair1: char, pair2: char) -> char {
+    for c in hand.chars() {
+        if c != pair1 && c != pair2 {
+            return c;
+        }
+    }
+    ' '
+}
+
+// Function to compare cards based on their rank
+fn compare_cards(card1: char, card2: char) -> std::cmp::Ordering {
+    let order = HashMap::from([
+        ('A', 14),
+        ('K', 13),
+        ('Q', 12),
+        ('J', 11),
+        ('T', 10),
+        ('9', 9),
+        ('8', 8),
+        ('7', 7),
+        ('6', 6),
+        ('5', 5),
+        ('4', 4),
+        ('3', 3),
+        ('2', 2),
+        ('1', 1),
+    ]);
+
+    let value1 = *order.get(&card1).unwrap_or(&0);
+    let value2 = *order.get(&card2).unwrap_or(&0);
+
+    value1.cmp(&value2)
 }
