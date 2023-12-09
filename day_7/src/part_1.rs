@@ -119,6 +119,8 @@ pub fn part_1(){
     }
 
     let mut rank = 0;  // The strongest hand has the highest rank
+
+    // Highs
     highs.sort_by(|a, b| {
         let a_values: Vec<i32> = a.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
         let b_values: Vec<i32> = b.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
@@ -127,6 +129,68 @@ pub fn part_1(){
 
     // Assign rank to each hand
     for hand in highs {
+        rank += 1;
+        ranked_hands.insert(rank, hand.clone());
+    }
+
+    // One pair
+    one_pairs.sort_by(|a, b| {
+        // find the pair
+        let mut a_pair = ' ';
+        let mut a_other = ' ';
+        let mut b_pair = ' ';
+        let mut b_other = ' ';
+
+        let mut counts = HashMap::new();
+        for c in a.hand.chars() {
+            let counter = counts.entry(c).or_insert(0);
+            *counter += 1;
+        }
+        for (key, value) in &counts {
+            if *value == 2 {
+                a_pair = *key;
+            } else {
+                a_other = *key;
+            }
+        }
+
+        counts = HashMap::new();
+        for c in b.hand.chars() {
+            let counter = counts.entry(c).or_insert(0);
+            *counter += 1;
+        }
+        for (key, value) in &counts {
+            if *value == 2 {
+                b_pair = *key;
+            } else {
+                b_other = *key;
+            }
+        }
+
+        // compare the pair
+        let a_pair_value = *order.get(&a_pair).unwrap_or(&0);
+        let b_pair_value = *order.get(&b_pair).unwrap_or(&0);
+        let pair_comparison = a_pair_value.cmp(&b_pair_value);
+        if pair_comparison != std::cmp::Ordering::Equal {
+            return pair_comparison;
+        }
+
+        // compare the other cards
+        let a_other_value = *order.get(&a_other).unwrap_or(&0);
+        let b_other_value = *order.get(&b_other).unwrap_or(&0);
+        let other_comparison = a_other_value.cmp(&b_other_value);
+        if other_comparison != std::cmp::Ordering::Equal {
+            return other_comparison;
+        }
+
+        // compare the hand
+        let a_values: Vec<i32> = a.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
+        let b_values: Vec<i32> = b.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
+        a_values.cmp(&b_values)
+    });
+
+    // Assign rank to each hand
+    for hand in one_pairs {
         rank += 1;
         ranked_hands.insert(rank, hand.clone());
     }
