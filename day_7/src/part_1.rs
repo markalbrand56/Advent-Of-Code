@@ -198,27 +198,87 @@ pub fn part_1(){
 
     // Two pair
     two_pairs.sort_by(|a, b| {
-        // Find the pairs and the other cards
-        let (a_pair1, a_pair2) = find_pairs(&a.hand);
-        let (b_pair1, b_pair2) = find_pairs(&b.hand);
+        // each hand contains two pairs and one other card
+        // find the pairs and the other cards
+        // the hand with the highest pair win
+        // if the pairs are equal, the hand with the highest other card win
+        // so KKQQ3 > KKQQ1 > JJAAK
 
-        // Compare the higher pair
-        let pair_comparison = compare_cards(a_pair2, b_pair2);
+        let mut a_pair1 = ' ';
+        let mut a_pair2 = ' ';
+        let mut a_other = ' ';
+        let mut b_pair1 = ' ';
+        let mut b_pair2 = ' ';
+        let mut b_other = ' ';
+
+        let mut counts = HashMap::new();
+        for c in a.hand.chars() {
+            let counter = counts.entry(c).or_insert(0);
+            *counter += 1;
+        }
+        for (key, value) in &counts {
+            if *value == 2 {
+                if a_pair1 == ' ' {
+                    a_pair1 = *key;
+                } else {
+                    a_pair2 = *key;
+                }
+            } else {
+                a_other = *key;
+            }
+        }
+
+        counts = HashMap::new();
+        for c in b.hand.chars() {
+            let counter = counts.entry(c).or_insert(0);
+            *counter += 1;
+        }
+        for (key, value) in &counts {
+            if *value == 2 {
+                if b_pair1 == ' ' {
+                    b_pair1 = *key;
+                } else {
+                    b_pair2 = *key;
+                }
+            } else {
+                b_other = *key;
+            }
+        }
+
+        // compare the pairs
+        let a_pair1_value = *order.get(&a_pair1).unwrap_or(&0);
+        let a_pair2_value = *order.get(&a_pair2).unwrap_or(&0);
+        let b_pair1_value = *order.get(&b_pair1).unwrap_or(&0);
+        let b_pair2_value = *order.get(&b_pair2).unwrap_or(&0);
+
+        let a_higher = if a_pair1_value > a_pair2_value { a_pair1_value } else { a_pair2_value };
+        let b_higher = if b_pair1_value > b_pair2_value { b_pair1_value } else { b_pair2_value };
+
+        let pair_comparison = a_higher.cmp(&b_higher);
         if pair_comparison != std::cmp::Ordering::Equal {
             return pair_comparison;
+        } else {
+            let a_lower = if a_pair1_value < a_pair2_value { a_pair1_value } else { a_pair2_value };
+            let b_lower = if b_pair1_value < b_pair2_value { b_pair1_value } else { b_pair2_value };
+            let pair_comparison = a_lower.cmp(&b_lower);
+            if pair_comparison != std::cmp::Ordering::Equal {
+                return pair_comparison;
+            }
         }
 
-        // Compare the lower pair
-        let lower_pair_comparison = compare_cards(a_pair1, b_pair1);
-        if lower_pair_comparison != std::cmp::Ordering::Equal {
-            return lower_pair_comparison;
+        // compare the other cards
+        let a_other_value = *order.get(&a_other).unwrap_or(&0);
+        let b_other_value = *order.get(&b_other).unwrap_or(&0);
+        let other_comparison = a_other_value.cmp(&b_other_value);
+
+        if other_comparison != std::cmp::Ordering::Equal {
+            return other_comparison;
         }
 
-        // Compare the remaining card
-        let a_remaining = find_remaining_card(&a.hand, a_pair1, a_pair2);
-        let b_remaining = find_remaining_card(&b.hand, b_pair1, b_pair2);
-
-        compare_cards(a_remaining, b_remaining)
+        // compare the hand
+        let a_values: Vec<i32> = a.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
+        let b_values: Vec<i32> = b.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
+        a_values.cmp(&b_values)
     });
 
     // Assign rank to each hand
