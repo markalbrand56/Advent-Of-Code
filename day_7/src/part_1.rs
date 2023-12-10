@@ -430,20 +430,35 @@ pub fn part_1(){
         let b_other1_value = *order.get(&b_other1).unwrap_or(&0);
         let b_other2_value = *order.get(&b_other2).unwrap_or(&0);
 
-        let a_other_comparison = a_other1_value.cmp(&a_other2_value);
-        let b_other_comparison = b_other1_value.cmp(&b_other2_value);
+        let mut a_higher: i32 = 0;
+        let mut a_lower: i32 = 0;
+        let mut b_higher: i32 = 0;
+        let mut b_lower: i32 = 0;
 
-        if a_other_comparison != std::cmp::Ordering::Equal {
-            return a_other_comparison;
-        }
-        if b_other_comparison != std::cmp::Ordering::Equal {
-            return b_other_comparison;
+        if a_other1_value > a_other2_value {
+            a_higher = a_other1_value;
+            a_lower = a_other2_value;
+        } else {
+            a_higher = a_other2_value;
+            a_lower = a_other1_value;
         }
 
-        // Compare the hand
-        let a_values: Vec<i32> = a.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
-        let b_values: Vec<i32> = b.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
-        a_values.cmp(&b_values)
+        if b_other1_value > b_other2_value {
+            b_higher = b_other1_value;
+            b_lower = b_other2_value;
+        } else {
+            b_higher = b_other2_value;
+            b_lower = b_other1_value;
+        }
+
+        let higher_comparison = a_higher.cmp(&b_higher);
+        if higher_comparison != std::cmp::Ordering::Equal {
+            return higher_comparison;
+        }
+
+        let lower_comparison = a_lower.cmp(&b_lower);
+        return lower_comparison;
+
     });
 
     // Assign rank to each hand
