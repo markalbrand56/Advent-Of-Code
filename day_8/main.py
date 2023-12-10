@@ -16,8 +16,6 @@ END = "ZZZ"
 
 
 def part_1():
-    print("Hello world")
-
     f = open("input.txt", "r")
     lines = []
 
