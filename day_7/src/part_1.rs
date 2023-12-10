@@ -562,7 +562,11 @@ pub fn part_1(){
         }
 
         // Compare the other card
-        compare_cards(a_other, b_other)
+        let a_other_value = *order.get(&a_other).unwrap_or(&0);
+        let b_other_value = *order.get(&b_other).unwrap_or(&0);
+
+        let other_comparison = a_other_value.cmp(&b_other_value);
+        return other_comparison;
     });
 
     // Assign rank to each hand
