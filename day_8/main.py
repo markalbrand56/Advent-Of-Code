@@ -1,19 +1,21 @@
 class Instruction:
-    label: str 
+    label: str
     left = None
     right = None
 
     def __init__(self, n, l, r):
-        self.label = n 
-        self.left = l 
-        self.right = r 
+        self.label = n
+        self.left = l
+        self.right = r
 
     def __repr__(self):
         return f"{self.label} -> R:'{self.right}' L:'{self.left}'"
 
+
 END = "ZZZ"
 
-def main():
+
+def part_1():
     print("Hello world")
 
     f = open("input.txt", "r")
@@ -62,4 +64,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    part_1()
