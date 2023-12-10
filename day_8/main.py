@@ -1,3 +1,6 @@
+from math import lcm
+
+
 class Instruction:
     label: str
     left = None
@@ -60,19 +63,14 @@ def part_1():
 
 
 def part_2():
+    print("Part 2")
     f = open("input.txt", "r")
-    lines = []
-
-    for line in f:
-        if line != "\n":
-            lines.append(line.strip())
-
+    lines = [line.strip() for line in f if line != "\n"]
     f.close()
 
     directions = [c for c in lines[0]]
     lines = lines[1::]
 
-    print(f"'{directions}'\n")
     instructions = {}
     startings = []
     for line in lines:
@@ -80,38 +78,31 @@ def part_2():
         spl = line.split(" = ")
 
         label = spl[0]
-        l = spl[1].split(" ")[0]
-        l = l.replace("(", "")
-        r = spl[1].split(" ")[1]
-        r = r.replace(")", "")
+        l = spl[1].split(" ")[0].replace("(", "")
+        r = spl[1].split(" ")[1].replace(")", "")
 
         if label.endswith("A"):
             startings.append(label)
 
         instructions[label] = {"R": r, "L": l}
 
-    print(instructions)
+    cycles = []
+    for starting in startings:
+        current = starting
+        cycle_length = 0
+        while True:
+            dir = directions[cycle_length % len(directions)]
+            current = instructions[current][dir]
+            cycle_length += 1
+            if current.endswith("Z"):
+                break
+        cycles.append(cycle_length)
 
-    counter = 0
-    reached = False
-    states = [s for s in startings]
-    while not reached:
-        dir = directions[(counter) % len(directions)]
-        counter += 1
-        ends = 0
-        for s in states:
-            new = instructions[s][dir]
-            states[states.index(s)] = new
-            if new.endswith("Z"):
-                ends += 1
-        if ends == len(startings):
-            reached = True
+    lcm_value = cycles[0]
+    for cycle in cycles[1:]:
+        lcm_value = lcm(lcm_value, cycle)
 
-        # imprimir counter cada 1000000
-        if counter % 1000000 == 0:
-            print(f"{counter:,}")
-
-    print(f"2. Ended in {counter}")
+    print(f"2. Ended in {lcm_value}")
 
 
 if __name__ == "__main__":
