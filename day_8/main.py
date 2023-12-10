@@ -107,6 +107,10 @@ def part_2():
         if ends == len(startings):
             reached = True
 
+        # imprimir counter cada 1000000
+        if counter % 1000000 == 0:
+            print(f"{counter:,}")
+
     print(f"2. Ended in {counter}")
 
 
