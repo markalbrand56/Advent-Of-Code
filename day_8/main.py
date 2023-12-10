@@ -16,7 +16,7 @@ END = "ZZZ"
 def main():
     print("Hello world")
 
-    f = open("sample.txt", "r")
+    f = open("input.txt", "r")
     lines = []
 
     for line in f:
@@ -29,9 +29,8 @@ def main():
     lines = lines[1::]
 
     print(f"'{directions}'\n")
-    instructions = []
+    instructions = {}
     for line in lines:
-        print(f"'{line}'")
         line = line.replace(",", "")
         spl = line.split(" = ")
 
@@ -41,25 +40,25 @@ def main():
         r = spl[1].split(" ")[1]
         r = r.replace(")", "")
 
-        ins = Instruction(label, l, r)
-        print(f"{ins}")
-        instructions.append(ins)
+        instructions[label] = {"r": r, "l": l}
 
-    for x in instructions:
-        for y in instructions:
-            if y.right == x.label:
-                y.righ == x
-            if y.left == x.label:
-                y.left == x
+    print(instructions)
 
     reached = False
-    while(!reached):
-        current = instructions[0]
+    counter = 0
+    current = "AAA"
+    while not reached:
         for c in directions:
+            counter += 1
             if c == "L":
-                current = current.left
-            else if c == "R":
-                current = current.r
+                current = instructions[current]["l"]
+            if c == "R":
+                current = instructions[current]["r"]
+
+        if current == END:
+            reached = True
+
+    print(f"Reached in {counter}")
 
 
 if __name__ == "__main__":
