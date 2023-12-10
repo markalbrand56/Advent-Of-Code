@@ -123,9 +123,154 @@ pub fn part_1(){
 
     // Highs
     highs.sort_by(|a, b| {
-        let a_values: Vec<i32> = a.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
-        let b_values: Vec<i32> = b.hand.chars().map(|c| *order.get(&c).unwrap_or(&0)).collect();
-        a_values.cmp(&b_values)
+        let mut a_high = ' ';
+        let mut a_2 = ' ';
+        let mut a_3 = ' ';
+        let mut a_4 = ' ';
+        let mut a_5 = ' ';
+        let mut b_high = ' ';
+        let mut b_2 = ' ';
+        let mut b_3 = ' ';
+        let mut b_4 = ' ';
+        let mut b_5 = ' ';
+
+        let mut values_a = HashMap::new();
+        for c in a.hand.chars() {
+            values_a.insert(c, *order.get(&c).unwrap_or(&0));
+        }
+
+        let mut values_b = HashMap::new();
+        for c in b.hand.chars() {
+            values_b.insert(c, *order.get(&c).unwrap_or(&0));
+        }
+
+
+        // Find the highest card and remove it from values
+        let mut a_max = 0;
+        let mut b_max = 0;
+        for (key, value) in &values_a {
+            if *value > a_max {
+                a_max = *value;
+                a_high = *key;
+            }
+        }
+        values_a.remove(&a_high);
+
+        for (key, value) in &values_b {
+            if *value > b_max {
+                b_max = *value;
+                b_high = *key;
+            }
+        }
+        values_b.remove(&b_high);
+
+        // Find the second highest card and remove it from values
+        let mut a_max = 0;
+        let mut b_max = 0;
+        for (key, value) in &values_a {
+            if *value > a_max {
+                a_max = *value;
+                a_2 = *key;
+            }
+        }
+        values_a.remove(&a_2);
+
+        for (key, value) in &values_b {
+            if *value > b_max {
+                b_max = *value;
+                b_2 = *key;
+            }
+        }
+        values_b.remove(&b_2);
+
+        // Find the third highest card and remove it from values
+        let mut a_max = 0;
+        let mut b_max = 0;
+
+        for (key, value) in &values_a {
+            if *value > a_max {
+                a_max = *value;
+                a_3 = *key;
+            }
+        }
+        values_a.remove(&a_3);
+
+        for (key, value) in &values_b {
+            if *value > b_max {
+                b_max = *value;
+                b_3 = *key;
+            }
+        }
+        values_b.remove(&b_3);
+
+        // Find the fourth highest card and remove it from values
+        let mut a_max = 0;
+        let mut b_max = 0;
+
+        for (key, value) in &values_a {
+            if *value > a_max {
+                a_max = *value;
+                a_4 = *key;
+            }
+        }
+        values_a.remove(&a_4);
+
+        for (key, value) in &values_b {
+            if *value > b_max {
+                b_max = *value;
+                b_4 = *key;
+            }
+        }
+        values_b.remove(&b_4);
+
+        // Find the fifth highest card and remove it from values
+        let mut a_max = 0;
+        let mut b_max = 0;
+
+        for (key, value) in &values_a {
+            if *value > a_max {
+                a_max = *value;
+                a_5 = *key;
+            }
+        }
+        values_a.remove(&a_5);
+
+        for (key, value) in &values_b {
+            if *value > b_max {
+                b_max = *value;
+                b_5 = *key;
+            }
+        }
+        values_b.remove(&b_5);
+
+        // Compare the highest card
+        let high_comparison = compare_cards(a_high, b_high);
+        if high_comparison != std::cmp::Ordering::Equal {
+            return high_comparison;
+        }
+
+        // Compare the second highest card
+        let second_comparison = compare_cards(a_2, b_2);
+        if second_comparison != std::cmp::Ordering::Equal {
+            return second_comparison;
+        }
+
+        // Compare the third highest card
+        let third_comparison = compare_cards(a_3, b_3);
+        if third_comparison != std::cmp::Ordering::Equal {
+            return third_comparison;
+        }
+
+        // Compare the fourth highest card
+        let fourth_comparison = compare_cards(a_4, b_4);
+        if fourth_comparison != std::cmp::Ordering::Equal {
+            return fourth_comparison;
+        }
+
+        // Compare the fifth highest card
+        let fifth_comparison = compare_cards(a_5, b_5);
+        return fifth_comparison;
+
     });
 
     // Assign rank to each hand
