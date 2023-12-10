@@ -54,8 +54,8 @@ impl Hand {
     }
 }
 
-pub fn part_1(){
-    println!("Part 1");
+pub fn part_2(){
+    println!("Part 2");
     let order = HashMap::from([
         ('A', 14),
         ('K', 13),
@@ -267,7 +267,7 @@ pub fn part_1(){
     let mut winnings: i64 = 0;
     for key in ranked_hands.keys().sorted() {
         let hand = ranked_hands.get(key).unwrap();
-        // println!("{key} {} {} {:?}", hand.hand, hand.bet, hand.type_hand);
+        println!("{key} {} {} {:?}", hand.hand, hand.bet, hand.type_hand);
         winnings += (key * hand.bet) as i64;
     }
 
