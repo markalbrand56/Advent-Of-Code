@@ -22,6 +22,7 @@ struct Hand {
 }
 
 impl Hand {
+    // J -> Joker
     fn determine_hand_type(&mut self) {
         let mut counts = HashMap::new();
 
@@ -34,22 +35,81 @@ impl Hand {
 
         match max_count {
             5 => self.type_hand = HandType::FiveOfKind,
-            4 => self.type_hand = HandType::FourOfKind,
+            4 => {
+                // If the card that appears 4 times is not a Joker, and there is a Joker, then it is a Five of a kind
+                if counts.get(&'J').unwrap_or(&0) == &0 { // If there is no Joker
+                    self.type_hand = HandType::FourOfKind;
+                } else { // If there is a Joker (either 4 or 1)
+                    self.type_hand = HandType::FiveOfKind;
+                }
+            },
             3 => {
-                if counts.len() == 2 {
-                    self.type_hand = HandType::FullHouse;  // Si solo hay dos cartas, significa que hay un par
-                } else {
-                    self.type_hand = HandType::ThreeOfKind;  // Si hay más, solo es un trío
+                // If the card that appears 3 times is not a Joker, and there is a Joker:
+                //   If there are 2 jokers, then it is a Five of a kind
+                //   If there is 1 joker, then it is a Four of a kind
+                // If the card that appears 3 times is a Joker:
+                //   If there is one other card, then it is a Five of a kind
+                //   If there are two other cards, then it is a Four of a kind
+                if counts.get(&'J').unwrap_or(&0) == &0 { // If there is no Joker
+                    if counts.len() == 2 {
+                        self.type_hand = HandType::FullHouse;  // Only two cards, so there is a pair
+                    } else {
+                        self.type_hand = HandType::ThreeOfKind;  // More than two cards, so there is a trio
+                    }
+                } else { // If there is a Joker (either 3, 2 or 1)
+                    if counts.get(&'J').unwrap_or(&0) == &2 { // If there are two Jokers
+                        self.type_hand = HandType::FiveOfKind;
+                    } else if counts.get(&'J').unwrap_or(&0) == &1 { // If there is one Joker
+                        self.type_hand = HandType::FourOfKind;
+                    } else { // If there are three Jokers
+                        if counts.len() == 2 { // If there are only two cards, then there is a pair
+                            self.type_hand = HandType::FiveOfKind; // Joker copies the pair
+                        } else { // If there are more than two cards, then there is a trio
+                            self.type_hand = HandType::FourOfKind; // Joker one of the remaining two cards
+                        }
+                    }
                 }
             }
             2 => {
-                if counts.len() == 3 {
-                    self.type_hand = HandType::TwoPair;
-                } else {
-                    self.type_hand = HandType::OnePair;
+                // If there is only one pair and there is a Joker:
+                //    If the pair is not a Joker, and there is a Joker, then it is a three of a kind
+                //    If the pair is a Joker, then it is a three of a kind
+                // If there are two pairs and there is a Joker:
+                //    If the pairs are not Jokers, and there is a Joker, then it is a Full House
+                //    If one of the pairs is a Joker, then it is a four of a kind
+                // If there is no Joker:
+                //    If there is only one pair, then it is a One Pair
+                //    If there are two pairs, then it is a Two Pair
+
+                if counts.get(&'J').unwrap_or(&0) == &0 { // If there is no Joker
+                    if counts.len() == 3 { // Two pair
+                        self.type_hand = HandType::TwoPair;
+                    } else { // One pair
+                        self.type_hand = HandType::OnePair;
+                    }
+                } else { // If there is a Joker
+                    if counts.len() == 3 { // Two pair
+                        // The pair is not a Joker, and there is a Joker, then it is a Full House
+                        if counts.get(&'J').unwrap_or(&0) == &2 { // If there are two Jokers
+                            self.type_hand = HandType::FourOfKind;
+                        } else { // If there is one Joker
+                            self.type_hand = HandType::FullHouse;
+                        }
+                    } else { // One pair
+                        // Even if the pair is a Joker, it is a three of a kind
+                        self.type_hand = HandType::ThreeOfKind;
                 }
             }
-            _ => self.type_hand = HandType::High,
+        }
+        1 => {
+            // If there is a joker it becomes a pair
+            if counts.get(&'J').unwrap_or(&0) == &0 { // If there is no Joker
+                self.type_hand = HandType::High;
+            } else { // If there is a Joker
+                self.type_hand = HandType::OnePair;
+            }
+        }
+        _ => self.type_hand = HandType::High,
         }
     }
 }
@@ -60,7 +120,6 @@ pub fn part_2(){
         ('A', 14),
         ('K', 13),
         ('Q', 12),
-        ('J', 11),
         ('T', 10),
         ('9', 9),
         ('8', 8),
@@ -71,6 +130,7 @@ pub fn part_2(){
         ('3', 3),
         ('2', 2),
         ('1', 1),
+        ('J', 0),
     ]);
 
     let contents = fs::read_to_string("src/input.txt")
@@ -92,6 +152,7 @@ pub fn part_2(){
                 type_hand: HandType::None,
             };
             h.determine_hand_type();
+            println!("{:?} {:?}", h.hand, h.type_hand);
             hands.push(h);
         }
     }
