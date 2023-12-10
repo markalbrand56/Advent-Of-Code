@@ -11,6 +11,8 @@ class Instruction:
     def __repr__(self):
         return f"{self.label} -> R:'{self.right}' L:'{self.left}'"
 
+END = "ZZZ"
+
 def main():
     print("Hello world")
 
@@ -42,6 +44,22 @@ def main():
         ins = Instruction(label, l, r)
         print(f"{ins}")
         instructions.append(ins)
+
+    for x in instructions:
+        for y in instructions:
+            if y.right == x.label:
+                y.righ == x
+            if y.left == x.label:
+                y.left == x
+
+    reached = False
+    while(!reached):
+        current = instructions[0]
+        for c in directions:
+            if c == "L":
+                current = current.left
+            else if c == "R":
+                current = current.r
 
 
 if __name__ == "__main__":
