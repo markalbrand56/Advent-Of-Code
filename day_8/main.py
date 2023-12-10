@@ -58,6 +58,7 @@ def part_1():
 
     print(f"Reached in {counter}")
 
+
 def part_2():
     f = open("input.txt", "r")
     lines = []
