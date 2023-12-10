@@ -191,104 +191,93 @@ pub fn part_1(){
         }
 
         // Get the highest of the three remaining cards
-        let mut a_third_value = *order.get(&a_third).unwrap_or(&0);
-        let mut a_fourth_value = *order.get(&a_fourth).unwrap_or(&0);
-        let mut a_fifth_value = *order.get(&a_fifth).unwrap_or(&0);
-        let mut b_third_value = *order.get(&b_third).unwrap_or(&0);
-        let mut b_fourth_value = *order.get(&b_fourth).unwrap_or(&0);
-        let mut b_fifth_value = *order.get(&b_fifth).unwrap_or(&0);
+        let a_third_value = *order.get(&a_third).unwrap_or(&0);
+        let a_fourth_value = *order.get(&a_fourth).unwrap_or(&0);
+        let a_fifth_value = *order.get(&a_fifth).unwrap_or(&0);
+        let b_third_value = *order.get(&b_third).unwrap_or(&0);
+        let b_fourth_value = *order.get(&b_fourth).unwrap_or(&0);
+        let b_fifth_value = *order.get(&b_fifth).unwrap_or(&0);
 
         let mut a_higher: i32 = 0;
+        let mut a_second: i32 = 0;
+        let mut a_lowest: i32 = 0;
         let mut b_higher: i32 = 0;
+        let mut b_second: i32 = 0;
+        let mut b_lowest: i32 = 0;
 
         if a_third_value > a_fourth_value && a_third_value > a_fifth_value {
             a_higher = a_third_value;
-            a_third_value = 0;
+            if a_fourth_value > a_fifth_value {
+                a_second = a_fourth_value;
+                a_lowest = a_fifth_value;
+            } else {
+                a_second = a_fifth_value;
+                a_lowest = a_fourth_value;
+            }
         } else if a_fourth_value > a_third_value && a_fourth_value > a_fifth_value {
             a_higher = a_fourth_value;
-            a_fourth_value = 0;
+            if a_third_value > a_fifth_value {
+                a_second = a_third_value;
+                a_lowest = a_fifth_value;
+            } else {
+                a_second = a_fifth_value;
+                a_lowest = a_third_value;
+            }
         } else {
             a_higher = a_fifth_value;
-            a_fifth_value = 0;
+            if a_third_value > a_fourth_value {
+                a_second = a_third_value;
+                a_lowest = a_fourth_value;
+            } else {
+                a_second = a_fourth_value;
+                a_lowest = a_third_value;
+            }
         }
 
         if b_third_value > b_fourth_value && b_third_value > b_fifth_value {
             b_higher = b_third_value;
-            b_third_value = 0;
+            if b_fourth_value > b_fifth_value {
+                b_second = b_fourth_value;
+                b_lowest = b_fifth_value;
+            } else {
+                b_second = b_fifth_value;
+                b_lowest = b_fourth_value;
+            }
         } else if b_fourth_value > b_third_value && b_fourth_value > b_fifth_value {
             b_higher = b_fourth_value;
-            b_fourth_value = 0;
+            if b_third_value > b_fifth_value {
+                b_second = b_third_value;
+                b_lowest = b_fifth_value;
+            } else {
+                b_second = b_fifth_value;
+                b_lowest = b_third_value;
+            }
         } else {
             b_higher = b_fifth_value;
-            b_fifth_value = 0;
+            if b_third_value > b_fourth_value {
+                b_second = b_third_value;
+                b_lowest = b_fourth_value;
+            } else {
+                b_second = b_fourth_value;
+                b_lowest = b_third_value;
+            }
         }
 
+        // Compare the highest remaining card
         let higher_comparison = a_higher.cmp(&b_higher);
         if higher_comparison != std::cmp::Ordering::Equal {
             return higher_comparison;
         }
 
-        // Get the second highest of the three remaining cards
-        let mut a_second: i32 = 0;
-        let mut b_second: i32 = 0;
-
-        if a_third_value > a_fourth_value && a_third_value > a_fifth_value {
-            a_second = a_third_value;
-            a_third_value = 0;
-        } else if a_fourth_value > a_third_value && a_fourth_value > a_fifth_value {
-            a_second = a_fourth_value;
-            a_fourth_value = 0;
-        } else {
-            a_second = a_fifth_value;
-            a_fifth_value = 0;
-        }
-
-        if b_third_value > b_fourth_value && b_third_value > b_fifth_value {
-            b_second = b_third_value;
-            b_third_value = 0;
-        } else if b_fourth_value > b_third_value && b_fourth_value > b_fifth_value {
-            b_second = b_fourth_value;
-            b_fourth_value = 0;
-        } else {
-            b_second = b_fifth_value;
-            b_fifth_value = 0;
-        }
-
+        // Compare the second highest remaining card
         let second_comparison = a_second.cmp(&b_second);
         if second_comparison != std::cmp::Ordering::Equal {
             return second_comparison;
         }
 
-        // Get the third highest of the three remaining cards
-        let mut a_third: i32 = 0;
-        let mut b_third: i32 = 0;
-
-        if a_third_value > a_fourth_value && a_third_value > a_fifth_value {
-            a_third = a_third_value;
-            a_third_value = 0;
-        } else if a_fourth_value > a_third_value && a_fourth_value > a_fifth_value {
-            a_third = a_fourth_value;
-            a_fourth_value = 0;
-        } else {
-            a_third = a_fifth_value;
-            a_fifth_value = 0;
-        }
-
-        if b_third_value > b_fourth_value && b_third_value > b_fifth_value {
-            b_third = b_third_value;
-            b_third_value = 0;
-        } else if b_fourth_value > b_third_value && b_fourth_value > b_fifth_value {
-            b_third = b_fourth_value;
-            b_fourth_value = 0;
-        } else {
-            b_third = b_fifth_value;
-            b_fifth_value = 0;
-        }
-
-        let third_comparison = a_third.cmp(&b_third);
-
-        return third_comparison;
-
+        // Compare the lowest remaining card
+        let lowest_comparison = a_lowest.cmp(&b_lowest);
+        return lowest_comparison;
     });
 
     // Assign rank to each hand
