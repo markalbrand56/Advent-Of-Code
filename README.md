@@ -31,3 +31,5 @@
 > Tengo confianza de que el algoritmo está bien pero hasta el momento no he terminado la ejecución, otro día lo dejaré corriendo para ver si me da la respuesta correcta.
 
 ### Day 6: Wait For It ⭐⭐ [<img align="left" alt="Go" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg" style="padding-right:10px;" />]()
+
+### Day 7: Camel Cards ⭐⭐ [<img align="left" backgroundcolor="#FFFFFF" alt="Rust" width="35px" src="https://www.rust-lang.org/logos/rust-logo-128x128.png" style="padding-right:10px;" />]()
