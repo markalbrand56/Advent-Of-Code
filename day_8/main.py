@@ -20,7 +20,7 @@ def part_1():
     lines = []
 
     for line in f:
-        if (line != "\n"):
+        if line != "\n":
             lines.append(line.strip())
 
     f.close()
@@ -60,6 +60,36 @@ def part_1():
 
     print(f"Reached in {counter}")
 
+def part_2():
+    f = open("input.txt", "r")
+    lines = []
+
+    for line in f:
+        if line != "\n":
+            lines.append(line.strip())
+
+    f.close()
+
+    directions = lines[0]
+    lines = lines[1::]
+
+    print(f"'{directions}'\n")
+    instructions = {}
+    for line in lines:
+        line = line.replace(",", "")
+        spl = line.split(" = ")
+
+        label = spl[0]
+        l = spl[1].split(" ")[0]
+        l = l.replace("(", "")
+        r = spl[1].split(" ")[1]
+        r = r.replace(")", "")
+
+        instructions[label] = {"r": r, "l": l}
+
+    print(instructions)
+
 
 if __name__ == "__main__":
     part_1()
+    part_2()
