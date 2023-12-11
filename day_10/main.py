@@ -71,51 +71,51 @@ def part_1():
     while current != s:
         loop.append(current)
         next_pipes_inner = []
-        current_symbol = lines[current[1]][current[0]]
-        if current[0] - 1 >= 0:  # Buscar a la izquierda
-            izq_coords = (current[0] - 1, current[1])
-            izq = lines[izq_coords[1]][izq_coords[0]]
+        current_symbol = lines[current[0]][current[1]]
+        if current[1] - 1 >= 0:  # Buscar a la izquierda
+            izq_coords = (current[0], current[1] - 1)
+            izq = lines[izq_coords[0]][izq_coords[1]]
             if izq in next_pipe(current_symbol, 'W') and izq_coords not in loop:
-                next_pipes_inner.append((current[0] - 1, current[1]))
-        if current[0] + 1 < len(lines[current[1]]):  # Buscar a la derecha
-            der_coords = (current[0] + 1, current[1])
-            der = lines[der_coords[1]][der_coords[0]]
+                next_pipes_inner.append(izq_coords)
+        if current[1] + 1 < len(lines[current[1]]):  # Buscar a la derecha
+            der_coords = (current[0], current[1] + 1)
+            der = lines[der_coords[0]][der_coords[1]]
             if der in next_pipe(current_symbol, 'E') and der_coords not in loop:
-                next_pipes_inner.append((current[0] + 1, current[1]))
-        if current[1] - 1 >= 0:  # Buscar arriba
-            arr_coords = (current[0], current[1] - 1)
-            arr = lines[arr_coords[1]][arr_coords[0]]
+                next_pipes_inner.append(der_coords)
+        if current[0] - 1 >= 0:  # Buscar arriba
+            arr_coords = (current[0] - 1, current[1] )
+            arr = lines[arr_coords[0]][arr_coords[1]]
             if arr in next_pipe(current_symbol, 'N') and arr_coords not in loop:
-                next_pipes_inner.append((current[0], current[1] - 1))
-        if current[1] + 1 < len(lines):  # Buscar abajo
-            aba_coords = (current[0], current[1] + 1)
-            aba = lines[aba_coords[1]][aba_coords[0]]
+                next_pipes_inner.append(arr_coords)
+        if current[0] + 1 < len(lines):  # Buscar abajo
+            aba_coords = (current[0] + 1, current[1])
+            aba = lines[aba_coords[0]][aba_coords[1]]
             if aba in next_pipe(current_symbol, 'S') and aba_coords not in loop:
-                next_pipes_inner.append((current[0], current[1] + 1))
+                next_pipes_inner.append(aba_coords)
 
         if len(next_pipes_inner) == 0:
             # Verificar que S sea adyacente a current
-            if current[0] - 1 >= 0:  # Buscar a la izquierda
-                izq_coords = (current[0] - 1, current[1])
-                izq = lines[izq_coords[1]][izq_coords[0]]
+            if current[1] - 1 >= 0:  # Buscar a la izquierda
+                izq_coords = (current[0], current[1] - 1)
+                izq = lines[izq_coords[0]][izq_coords[1]]
                 if izq == 'S':
                     loop.append(izq_coords)
                     break
-            if current[0] + 1 < len(lines[current[1]]): # Buscar a la derecha
-                der_coords = (current[0] + 1, current[1])
-                der = lines[der_coords[1]][der_coords[0]]
+            if current[1] + 1 < len(lines[current[1]]): # Buscar a la derecha
+                der_coords = (current[0], current[1] + 1)
+                der = lines[der_coords[0]][der_coords[1]]
                 if der == 'S':
                     loop.append(der_coords)
                     break
-            if current[1] - 1 >= 0: # Buscar arriba
-                arr_coords = (current[0], current[1] - 1)
-                arr = lines[arr_coords[1]][arr_coords[0]]
+            if current[0] - 1 >= 0: # Buscar arriba
+                arr_coords = (current[0] - 1, current[1])
+                arr = lines[arr_coords[0]][arr_coords[1]]
                 if arr == 'S':
                     loop.append(arr_coords)
                     break
-            if current[1] + 1 < len(lines): # Buscar abajo
-                aba_coords = (current[0], current[1] + 1)
-                aba = lines[aba_coords[1]][aba_coords[0]]
+            if current[0] + 1 < len(lines): # Buscar abajo
+                aba_coords = (current[0] + 1, current[1])
+                aba = lines[aba_coords[0]][aba_coords[1]]
                 if aba == 'S':
                     loop.append(aba_coords)
                     break
