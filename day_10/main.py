@@ -23,7 +23,7 @@ def part_1():
     
     """
 
-    f = open("sample.txt", "r")
+    f = open("input.txt", "r")
     lines = []
 
     for line in f:
@@ -129,13 +129,24 @@ def part_1():
 
     # Encontrar las distancias de cada pipe en el loop respecto a S
     distances = {}
-    for i in range(len(loop)):
+    for i in range(len(loop)-1):
         # la distancia son las casillas que hay entre S y el pipe
         # (1,1) -> (2,1) = 1
         # (1,1) -> (2,2) = 2
-        distances[loop[i]] = abs(loop[i][0] - s[0]) + abs(loop[i][1] - s[1])
+        if i > len(loop) // 2:
+            distances[loop[i]] = (len(loop)-1) - i
+        else:
+            distances[loop[i]] = i
 
     print(f"Distances: {distances}")
+
+    # Encontrar la distancia mas larga
+    max_distance = 0
+    for key in distances:
+        if distances[key] > max_distance:
+            max_distance = distances[key]
+
+    print(f"Max distance: {max_distance}")
 
 
 def next_pipe(c: str, direction: str) -> list[str]:
