@@ -10,7 +10,7 @@ import (
 
 func Part2() {
 	fmt.Println("Part 2")
-	var fileName = "sample.txt"
+	var fileName = "input.txt"
 
 	readings, err := utils.ReadFile(fileName)
 
@@ -55,17 +55,21 @@ func Part2() {
 
 		for j := 0; j < len(extrapolations[i])-1; j++ {
 			line := extrapolations[i][j]
-			k := len(extrapolations[i][j+1]) - 1
-			v := line[len(line)-1]
+			k := 0
+			v := line[0]
 
-			extrapolations[i][j+1] = append(extrapolations[i][j+1], extrapolations[i][j+1][k]+v)
+			e := extrapolations[i][j+1][k] - v
+
+			extrapolations[i][j+1] = slices.Insert(extrapolations[i][j+1], 0, e)
 		}
 	}
 
 	var resultado int
 	for _, ex := range extrapolations {
 		line := ex[len(ex)-1]
-		resultado += line[len(line)-1]
+		v := line[0]
+		//fmt.Printf("\t%d\n", v)
+		resultado += v
 	}
 
 	fmt.Printf("Resultado: %d\n", resultado)
