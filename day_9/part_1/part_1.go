@@ -20,7 +20,6 @@ func Part1() {
 
 	var extrapolations [][][]int
 	for _, r := range readings {
-		fmt.Println(r)
 		vals := strings.Split(r, " ")
 		var nums []int
 		for _, v := range vals {
@@ -48,7 +47,7 @@ func Part1() {
 			}
 			j++
 		}
-		fmt.Println(extrapolations[i])
+		//fmt.Println(extrapolations[i])
 	}
 
 	for i := range extrapolations {
@@ -69,5 +68,5 @@ func Part1() {
 		resultado += line[len(line)-1]
 	}
 
-	fmt.Printf("Resultado: %d", resultado)
+	fmt.Printf("Resultado: %d\n", resultado)
 }
