@@ -10,7 +10,7 @@ import (
 
 func Part1() {
 	fmt.Println("Part 1")
-	var fileName = "sample.txt"
+	var fileName = "input.txt"
 
 	readings, err := utils.ReadFile(fileName)
 
