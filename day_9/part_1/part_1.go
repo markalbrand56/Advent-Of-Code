@@ -31,7 +31,7 @@ func Part1() {
 		extrapolations = append(extrapolations, extrapolation)
 	}
 
-	for i, _ := range extrapolations {
+	for i := range extrapolations {
 		zeroes := false
 		j := 0
 		for zeroes != true {
