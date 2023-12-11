@@ -63,5 +63,11 @@ func Part1() {
 		}
 	}
 
-	fmt.Println("Resultado")
+	var resultado int
+	for _, ex := range extrapolations {
+		line := ex[len(ex)-1]
+		resultado += line[len(line)-1]
+	}
+
+	fmt.Printf("Resultado: %d", resultado)
 }
