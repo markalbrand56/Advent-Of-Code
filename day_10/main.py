@@ -10,7 +10,7 @@ def part_1():
     # S: Inicio
 
 
-def next(c: str, dir: str) -> list[str]:
+def next_pipe(c: str, dir: str) -> list[str]:
     # Dir: N, S, E, W
 
     if c == '|':
