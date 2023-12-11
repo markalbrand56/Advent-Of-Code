@@ -47,20 +47,20 @@ def part_1():
     next_pipes = []
     if s[1] - 1 >= 0:  # Buscar a la izquierda
         izq = lines[s[0]][s[1]-1]
-        if izq in next_pipe(izq, 'W'):
-            next_pipes.append((s[0] - 1, s[1]))
+        if izq in next_pipe("S", 'W'):
+            next_pipes.append((s[0], s[1] - 1))
     if s[1] + 1 < len(lines[s[0]]):  # Buscar a la derecha
         der = lines[s[0]][s[1]+1]
-        if der in next_pipe(der, 'E'):
-            next_pipes.append((s[0] + 1, s[1]))
+        if der in next_pipe("S", 'E'):
+            next_pipes.append((s[0], s[1] + 1))
     if s[0] - 1 >= 0:  # Buscar arriba
         arr = lines[s[0]-1][s[1]]
-        if arr in next_pipe(arr, 'N'):
-            next_pipes.append((s[0], s[1] - 1))
+        if arr in next_pipe("S", 'N'):
+            next_pipes.append((s[0] - 1, s[1]))
     if s[0] + 1 < len(lines):  # Buscar abajo
         aba = lines[s[0]+1][s[1]]
-        if aba in next_pipe(aba, 'S'):
-            next_pipes.append((s[0], s[1] + 1))
+        if aba in next_pipe("S", 'S'):
+            next_pipes.append((s[0] + 1, s[1]))
 
     print(f"Next pipe: {next_pipes}")
 
@@ -73,50 +73,52 @@ def part_1():
         next_pipes_inner = []
         current_symbol = lines[current[1]][current[0]]
         if current[0] - 1 >= 0:  # Buscar a la izquierda
-            izq = lines[current[1]][current[0]-1]
             izq_coords = (current[0] - 1, current[1])
+            izq = lines[izq_coords[1]][izq_coords[0]]
             if izq in next_pipe(current_symbol, 'W') and izq_coords not in loop:
                 next_pipes_inner.append((current[0] - 1, current[1]))
         if current[0] + 1 < len(lines[current[1]]):  # Buscar a la derecha
-            der = lines[current[1]][current[0]+1]
             der_coords = (current[0] + 1, current[1])
+            der = lines[der_coords[1]][der_coords[0]]
             if der in next_pipe(current_symbol, 'E') and der_coords not in loop:
                 next_pipes_inner.append((current[0] + 1, current[1]))
         if current[1] - 1 >= 0:  # Buscar arriba
-            arr = lines[current[1]-1][current[0]]
             arr_coords = (current[0], current[1] - 1)
+            arr = lines[arr_coords[1]][arr_coords[0]]
             if arr in next_pipe(current_symbol, 'N') and arr_coords not in loop:
                 next_pipes_inner.append((current[0], current[1] - 1))
         if current[1] + 1 < len(lines):  # Buscar abajo
-            aba = lines[current[1]+1][current[0]]
             aba_coords = (current[0], current[1] + 1)
+            aba = lines[aba_coords[1]][aba_coords[0]]
             if aba in next_pipe(current_symbol, 'S') and aba_coords not in loop:
                 next_pipes_inner.append((current[0], current[1] + 1))
 
         if len(next_pipes_inner) == 0:
             # Verificar que S sea adyacente a current
-            if s[0] - 1 >= 0:  # Buscar a la izquierda
-                izq = lines[s[1]][s[0] - 1]
-                if izq in next_pipe(izq, 'W') and (s[0] - 1, s[1]) == current:
-                    loop.append(s)
+            if current[0] - 1 >= 0:  # Buscar a la izquierda
+                izq_coords = (current[0] - 1, current[1])
+                izq = lines[izq_coords[1]][izq_coords[0]]
+                if izq == 'S':
+                    loop.append(izq_coords)
                     break
-            if s[0] + 1 < len(lines[s[1]]):  # Buscar a la derecha
-                der = lines[s[1]][s[0] + 1]
-                if der in next_pipe(der, 'E') and (s[0] + 1, s[1]) == current:
-                    loop.append(s)
+            if current[0] + 1 < len(lines[current[1]]): # Buscar a la derecha
+                der_coords = (current[0] + 1, current[1])
+                der = lines[der_coords[1]][der_coords[0]]
+                if der == 'S':
+                    loop.append(der_coords)
                     break
-            if s[1] - 1 >= 0:  # Buscar arriba
-                arr = lines[s[1] - 1][s[0]]
-                if arr in next_pipe(arr, 'N') and (s[0], s[1] - 1) == current:
-                    loop.append(s)
+            if current[1] - 1 >= 0: # Buscar arriba
+                arr_coords = (current[0], current[1] - 1)
+                arr = lines[arr_coords[1]][arr_coords[0]]
+                if arr == 'S':
+                    loop.append(arr_coords)
                     break
-            if s[1] + 1 < len(lines):  # Buscar abajo
-                aba = lines[s[1] + 1][s[0]]
-                if aba in next_pipe(aba, 'S') and (s[0], s[1] + 1) == current:
-                    loop.append(s)
-
-            if loop[-1] == s:
-                break
+            if current[1] + 1 < len(lines): # Buscar abajo
+                aba_coords = (current[0], current[1] + 1)
+                aba = lines[aba_coords[1]][aba_coords[0]]
+                if aba == 'S':
+                    loop.append(aba_coords)
+                    break
             else:
                 print("No se encontro el loop")
                 exit()
@@ -124,6 +126,16 @@ def part_1():
             current = next_pipes_inner[0]
 
     print(f"Loop: {loop}")
+
+    # Encontrar las distancias de cada pipe en el loop respecto a S
+    distances = {}
+    for i in range(len(loop)):
+        # la distancia son las casillas que hay entre S y el pipe
+        # (1,1) -> (2,1) = 1
+        # (1,1) -> (2,2) = 2
+        distances[loop[i]] = abs(loop[i][0] - s[0]) + abs(loop[i][1] - s[1])
+
+    print(f"Distances: {distances}")
 
 
 def next_pipe(c: str, direction: str) -> list[str]:
@@ -207,6 +219,19 @@ def next_pipe(c: str, direction: str) -> list[str]:
         elif direction == 'W':
             # From F to : None
             return []
+    elif c == 'S':
+        if direction == 'N':
+            # From S to : |, 7, F
+            return ['|', '7', 'F', 'S']
+        elif direction == 'S':
+            # From S to : |, L, J
+            return ['|', 'L', 'J', 'S']
+        elif direction == 'E':
+            # From S to : -, 7, J
+            return ['-', '7', 'J', 'S']
+        elif direction == 'W':
+            # From S to : -, F, L
+            return ['-', 'F', 'L', 'S']
     else:
         return []
 
