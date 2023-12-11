@@ -39,7 +39,7 @@ func Part1() {
 			var diffs []int // diferencias entre los valores de una linea
 			line := extrapolations[i][j]
 			for k := 0; k < len(line)-1; k++ {
-				fmt.Printf("%d-%d: %d\n", line[k], line[k+1], line[k+1]-line[k])
+				//fmt.Printf("%d-%d: %d\n", line[k], line[k+1], line[k+1]-line[k])
 				diffs = append(diffs, line[k+1]-line[k])
 			}
 			extrapolations[i] = append(extrapolations[i], diffs)
@@ -51,4 +51,17 @@ func Part1() {
 		fmt.Println(extrapolations[i])
 	}
 
+	for i := range extrapolations {
+		slices.Reverse(extrapolations[i])
+
+		for j := 0; j < len(extrapolations[i])-1; j++ {
+			line := extrapolations[i][j]
+			k := len(extrapolations[i][j+1]) - 1
+			v := line[len(line)-1]
+
+			extrapolations[i][j+1] = append(extrapolations[i][j+1], extrapolations[i][j+1][k]+v)
+		}
+	}
+
+	fmt.Println("Resultado")
 }
