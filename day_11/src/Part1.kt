@@ -69,10 +69,62 @@ fun main() {
 
     // Imprimir imagen expandida
     println("Imagen expandida")
-    for (i in 0..imageExpanded.size - 1){
-        for (j in 0..imageExpanded[0].size - 1){
+    for (i in 0..<imageExpanded.size){
+        for (j in 0..<imageExpanded[0].size){
             print(imageExpanded[i][j])
         }
         println()
     }
+
+    // Guardar las coordenadas X,Y de cada "#" en un arraylist
+    val galaxies: MutableList<MutableList<Int>> = ArrayList()
+    for (i in 0..<imageExpanded.size){
+        for (j in 0..<imageExpanded[0].size){
+            if (imageExpanded[i][j] == '#'){
+                val galaxy: MutableList<Int> = ArrayList()
+                galaxy.add(i)
+                galaxy.add(j)
+                galaxies.add(galaxy)
+            }
+        }
+    }
+
+    // Imprimir coordenadas de las galaxias
+    println("Coordenadas de las galaxias")
+    for (i in 0..<galaxies.size){
+        println(galaxies[i])
+    }
+
+    // Generar todas las combinaciones de galaxias, sin importar el orden de las galaxias, sin repetir parejas
+    val combinations: MutableList<MutableList<MutableList<Int>>> = ArrayList()
+    for (i in 0..<galaxies.size){
+        for (j in i+1..<galaxies.size){
+            val combination: MutableList<MutableList<Int>> = ArrayList()
+            combination.add(galaxies[i])
+            combination.add(galaxies[j])
+            combinations.add(combination)
+        }
+    }
+
+    // Imprimir combinaciones
+    println("Combinaciones")
+    println(combinations.size)
+
+    // Calcular la distancia entre cada par de galaxias y sumar las distancias
+    var totalDistance = 0
+    for (i in 0..<combinations.size){
+        val combination = combinations[i]
+        val galaxy1 = combination[0]
+        val galaxy2 = combination[1]
+        val x1 = galaxy1[0]
+        val y1 = galaxy1[1]
+        val x2 = galaxy2[0]
+        val y2 = galaxy2[1]
+        val distance = Math.abs(x1 - x2) + Math.abs(y1 - y2)
+        totalDistance += distance
+    }
+
+    // Imprimir distancia total
+    println("Distancia total")
+    println(totalDistance)
 }
