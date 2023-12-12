@@ -17,28 +17,62 @@ fun main() {
     }
 
 
-    val h = image.size - 1  // Rows
-    val w = image[0].size - 1  // Columns
+    var h = image.size - 1  // Rows
+    var w = image[0].size - 1  // Columns
+    val imageColExpanded: MutableList<MutableList<Char>> = ArrayList()
     val imageExpanded: MutableList<MutableList<Char>> = ArrayList()
 
-    // Revisar filas
+    for (i in 0..h){
+        // añadir arraylist vacio
+        imageColExpanded.add(ArrayList())
+    }
+
+    // Expandir columnas
+    // Si en la columna no se encuentra un "#" esta columna se debe duplicar
+    for (j in 0..w){
+        var hasGalaxy = false
+        for (i in 0..h){
+            val c = image[i][j]
+            if( c != '.'){
+                hasGalaxy = true
+            }
+        }
+        if (!hasGalaxy){ // Si la columna no tenía una galaxia
+            for (i in 0..h){
+                imageColExpanded[i].add(image[i][j])
+            }
+        }
+        for (i in 0..h){
+            imageColExpanded[i].add(image[i][j])
+        }
+    }
+
+    // Expandir filas
+    // Si en la fila no se encuentra un "#" esta fila se debe duplicar
+    h = imageColExpanded.size - 1
+    w = imageColExpanded[0].size - 1
     for (i in 0..h){
         var hasGalaxy = false
         for (j in 0..w){
-            val c = image[i][j]
+            val c = imageColExpanded[i][j]
             if( c != '.'){
                 hasGalaxy = true
             }
             println(c)
         }
-        val fila = image[i]
+        val fila = imageColExpanded[i]
         if (!hasGalaxy){ // Si la fila no tenía una galaxia
             imageExpanded.add(fila)
-            imageExpanded.add(fila)
-        } else{
-            imageExpanded.add(fila)
         }
-
+        imageExpanded.add(fila)
     }
-    println()
+
+    // Imprimir imagen expandida
+    println("Imagen expandida")
+    for (i in 0..imageExpanded.size - 1){
+        for (j in 0..imageExpanded[0].size - 1){
+            print(imageExpanded[i][j])
+        }
+        println()
+    }
 }
