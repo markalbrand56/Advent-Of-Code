@@ -3,7 +3,7 @@ import java.io.File
 fun main() {
     println("Part 1")
 
-    val lines = File("src/sample.txt").readLines()
+    val lines = File("src/input.txt").readLines()
     val image: MutableList<MutableList<Char>> = ArrayList()
 
     lines.forEach { line ->
