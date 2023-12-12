@@ -40,3 +40,5 @@
 
 ### Day 10: Pipe Maze ⭐ [<img align="left" alt="Python" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" style="padding-right:10px;" />]()
 
+### Day 11: Cosmic Expansion ⭐⭐ [<img align="left" alt="Kotlin" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" style="padding-right:10px;" />]()
+
