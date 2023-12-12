@@ -102,7 +102,7 @@ fun main() {
     println(combinations.size)
 
     // Calcular la distancia entre cada par de galaxias y sumar las distancias
-    var totalDistance = 0
+    var totalDistance: Long = 0
     for (i in 0..<combinations.size){
         val combination = combinations[i]
         val galaxy1 = combination[0]
