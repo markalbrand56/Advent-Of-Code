@@ -128,6 +128,17 @@ void part_1(const string& filename){
 	cout << "Result: " << result << endl;
 }
 
+int diff_in_pattern(string s1, string s2){
+	int diff = 0;
+	for(int i = 0; i < s1.length(); i++){
+		if (s1[i] != s2[i]){
+			diff++;
+		}
+	}
+
+	return diff;
+}
+
 void part_2(const string& filename){
 	ifstream file(filename);
 
@@ -154,6 +165,7 @@ void part_2(const string& filename){
 
 	for (int index = 0; index < patterns.size(); index++ ){
 		auto pattern = patterns[index];
+
 		/* HORIZONTAL REFLECTION */
 		int horizontal_reflection = -1;
 		for (int i = 1; i < pattern.size(); ++i){
@@ -164,19 +176,49 @@ void part_2(const string& filename){
 				bool reflection = true;
 				// Verificar que se cumpla el reflejo
 				auto k = i - 1;
+				int differences = 0;
 				for (int j = i; j < pattern.size() && k >= 0; j++){
 					string c = pattern[j];
 					string p = pattern[k];
+					int d = diff_in_pattern(c,p);
 					if(c != p){
-						reflection = false;
+						if(differences > 1){
+							reflection = false;
+						}else if (d == 1){
+							differences++;
+						}
 					}
 					k--;
 				}
 
 				if(reflection){
 					horizontal_reflection = i;
+					break;
 				}
 
+			} else if (diff_in_pattern(current_line, prev_line) == 1){
+				bool reflection = true;
+				// Verificar que se cumpla el reflejo
+				auto k = i - 2;
+				int differences = 0;
+				for (int j = i+1; j < pattern.size() && k >= 0; j++){
+					string c = pattern[j];
+					string p = pattern[k];
+					int d = diff_in_pattern(c,p);
+					if(c != p){
+						if(differences > 1){
+							reflection = false;
+						}else if (d == 1){
+							differences++;
+						}
+					}
+					k--;
+				}
+
+				if(reflection){
+					horizontal_reflection = i;
+					break;
+				}
 			}
 		}
 		if(horizontal_reflection > 0){
