@@ -117,18 +117,11 @@ void part_1(const string& filename){
 		}
 
 		if (vertical_reflection > 0){
-//			cout << "Vertical on " << index << endl;
 			result += vertical_reflection;
 			cout << "\t" << vertical_reflection << endl;
-//			cout << "\ti: " << index << " " << vertical_reflection << endl;
 		}
 
 	}
 
 	cout << "Result: " << result << endl;
 }
-
-/*
- 30495 <
- 30594 >
- */
