@@ -76,10 +76,10 @@ void part_1(const string& filename){
 
 		/* VERTICAL REFLECTION */
 		int vertical_reflection = -1;
-		int j = pattern[0].length(); // Columna
+		int j = 1; // Columna
 		auto l = pattern[j].length();
 
-		for (; j > 0; j--){
+		for (; j < l; j++){
 			bool reflection = true;
 			for(int i = 0; i < pattern.size(); i++){
 				char current = pattern[i][j];
@@ -96,14 +96,17 @@ void part_1(const string& filename){
 				int n = j-1;
 				bool clasifies = true;
 
-				for(int i = 0 ;i < pattern.size(); i++){
-					char c = pattern[i][m];
-					char p = pattern[i][n];
+				while(m < l && n >= 0){
+					for(int i = 0 ;i < pattern.size(); i++){
+						char c = pattern[i][m];
+						char p = pattern[i][n];
 
-					if(c != p){
-						clasifies = false;
-						continue;
+						if(c != p){
+							clasifies = false;
+						}
 					}
+					m++;
+					n--;
 				}
 
 				if (clasifies){
