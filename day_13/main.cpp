@@ -198,7 +198,7 @@ void part_2(const string& filename){
 
 			} else if (diff_in_pattern(current_line, prev_line) == 1){
 				bool reflection = true;
-				// Verificar que se cumpla el reflejo
+				// Verificar que se cumpla el reflejo modificando un solo caracter en dos lineas que no son iguales
 				auto k = i - 2;
 				int differences = 0;
 				for (int j = i+1; j < pattern.size() && k >= 0; j++){
