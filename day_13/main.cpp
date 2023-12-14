@@ -11,7 +11,7 @@ void part_1(const string& filename);
 int main() {
 	std::cout << "Hello, World!" << std::endl;
 
-	part_1("sample.txt");
+	part_1("input.txt");
 
 	return 0;
 }
@@ -63,22 +63,23 @@ void part_1(const string& filename){
 
 				if(reflection){
 					horizontal_reflection = i;
-					break;
 				}
 
 			}
 		}
 		if(horizontal_reflection > 0){
-			cout << "Horizontal on " << index << endl;
+//			cout << "Horizontal on " << index << endl;
 			result += 100 * horizontal_reflection;
+			cout << "\t" << 100 * horizontal_reflection << endl;
+			continue;
 		}
 
 		/* VERTICAL REFLECTION */
 		int vertical_reflection = -1;
-		int j = 1; // Columna
+		int j = pattern[0].length(); // Columna
 		auto l = pattern[j].length();
 
-		for (; j < l; j++){
+		for (; j > 0; j--){
 			bool reflection = true;
 			for(int i = 0; i < pattern.size(); i++){
 				char current = pattern[i][j];
@@ -113,8 +114,10 @@ void part_1(const string& filename){
 		}
 
 		if (vertical_reflection > 0){
-			cout << "Vertical on " << index << endl;
+//			cout << "Vertical on " << index << endl;
 			result += vertical_reflection;
+			cout << "\t" << vertical_reflection << endl;
+//			cout << "\ti: " << index << " " << vertical_reflection << endl;
 		}
 
 	}
