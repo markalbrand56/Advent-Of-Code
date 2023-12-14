@@ -42,3 +42,5 @@
 
 ### Day 11: Cosmic Expansion ⭐⭐ [<img align="left" alt="Kotlin" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kotlin/kotlin-original.svg" style="padding-right:10px;" />]()
 
+### Day 13: Point of Incidence: ⭐⭐ [<img align="left" alt="C++" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" style="padding-right:10px;" />]()
+
