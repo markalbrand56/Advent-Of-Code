@@ -1,8 +1,8 @@
 console.log("Part 2")
 
 const fs = require("fs")
-const fileName = "sample.txt"
-const cycles = 1
+const fileName = "input.txt"
+const cycles = 1000000000
 // a cycle is 4 tilts
 // 1. tilt north: move all rocks up as far as possible
 // 2. tilt west: move all rocks left as far as possible
@@ -19,6 +19,10 @@ fs.readFile(fileName, "utf-8", (error, datos) => {
     let rocks = []
 
     for(let c = 0; c < cycles; c++){
+        // every million cycles print
+        if (c % 1000000 === 0){
+            console.log("Cycle", c+1)
+        }
 
         // Tilt the platform north
         for (let i = 1; i < lines.length; i++){
