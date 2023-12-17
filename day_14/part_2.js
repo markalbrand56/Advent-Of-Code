@@ -4,10 +4,10 @@ const fs = require("fs")
 const fileName = "sample.txt"
 const cycles = 1
 // a cycle is 4 tilts
-// 1. tilt north
-// 2. tilt west
-// 3. tilt south
-// 4. tilt east
+// 1. tilt north: move all rocks up as far as possible
+// 2. tilt west: move all rocks left as far as possible
+// 3. tilt south: move all rocks down as far as possible
+// 4. tilt east: move all rocks right as far as possible
 
 fs.readFile(fileName, "utf-8", (error, datos) => {
     if (error){
@@ -44,11 +44,9 @@ fs.readFile(fileName, "utf-8", (error, datos) => {
         }
 
         // Tilt the platform west
-        for (let i = 0; i < lines.length; i++){
-            let currentLine = lines[i]
-
-            for (let j = currentLine.length - 1; j > 0; j--) {
-                let currentChar = currentLine[j]
+        for (let j = 1; j < lines[0].length; j++){
+            for (let i = 0; i < lines.length; i++){
+                let currentChar = lines[i][j]
 
                 if(currentChar === "O"){
                     let prevIndex = j-1
