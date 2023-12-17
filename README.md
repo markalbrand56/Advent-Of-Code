@@ -43,3 +43,5 @@
 
 ### Day 14: Parabolic Reflector Dish ⭐⭐ [<img align="left" alt="JS" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" style="padding-right:10px;" />]()
 
+### Day 15: Lens Library ⭐⭐ [<img align="left" alt="Python" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" style="padding-right:10px;" />]()
+
