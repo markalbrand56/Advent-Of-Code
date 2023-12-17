@@ -63,6 +63,50 @@ fs.readFile(fileName, "utf-8", (error, datos) => {
                 }
             }
         }
+
+        // Tilt the platform south
+        for (let i = lines.length-2; i >= 0; i--){
+            let currentLine = lines[i]
+
+            for (let j = 0; j < currentLine.length; j++) {
+                let currentChar = currentLine[j]
+
+                if(currentChar === "O"){
+                    let prevIndex = i+1
+                    let prevChar = lines[prevIndex][j]
+
+                    if (prevChar !== "O" && prevChar !== "#"){ // it can move
+                        while(prevIndex < lines.length-1 && lines[prevIndex+1][j] !== "O" && lines[prevIndex+1][j] !== "#"){ // Moves further up
+                            prevIndex++
+                            prevChar = lines[prevIndex][j]
+                        }
+                        lines[prevIndex] = lines[prevIndex].substring(0, j) + "O" + lines[prevIndex].substring(j+1, lines[prevIndex].length)
+                        lines[i] = lines[i].substring(0, j) + "." + lines[i].substring(j+1, lines[prevIndex].length)
+                    }
+                }
+            }
+        }
+
+        // Tilt the platform east
+        for (let j = lines[0].length-2; j >= 0; j--){
+            for (let i = 0; i < lines.length; i++){
+                let currentChar = lines[i][j]
+
+                if(currentChar === "O"){
+                    let prevIndex = j+1
+                    let prevChar = lines[i][prevIndex]
+
+                    if (prevChar !== "O" && prevChar !== "#"){ // it can move
+                        while(prevIndex < lines[0].length-1 && lines[i][prevIndex+1] !== "O" && lines[i][prevIndex+1] !== "#"){ // Moves further up
+                            prevIndex++
+                            prevChar = lines[i][prevIndex]
+                        }
+                        lines[i] = lines[i].substring(0, prevIndex) + "O" + lines[i].substring(prevIndex+1, lines[i].length)
+                        lines[i] = lines[i].substring(0, j) + "." + lines[i].substring(j+1, lines[i].length)
+                    }
+                }
+            }
+        }
     }
 
     for(let i = 0; i < lines.length; i++){
