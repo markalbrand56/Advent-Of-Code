@@ -3,7 +3,7 @@ console.log("Part 1")
 // Tilt the platform north
 
 const fs = require("fs")
-const fileName = "sample.txt"
+const fileName = "input.txt"
 
 fs.readFile(fileName, "utf-8", (error, datos) => {
     if (error){
@@ -11,6 +11,7 @@ fs.readFile(fileName, "utf-8", (error, datos) => {
     }
 
     const lines = datos.split("\r\n")
+    lines.filter(line => line !== "")
     let rocks = []
 
     for (let i = 1; i < lines.length; i++){
@@ -28,13 +29,17 @@ fs.readFile(fileName, "utf-8", (error, datos) => {
                         prevIndex--
                         prevChar = lines[prevIndex][j]
                     }
-                    rocks.push([prevIndex, j])
                     lines[prevIndex] = lines[prevIndex].substring(0, j) + "O" + lines[prevIndex].substring(j+1, lines[prevIndex].length)
                     lines[i] = lines[i].substring(0, j) + "." + lines[i].substring(j+1, lines[prevIndex].length)
-                } else{ // it stays
-                    rocks.push([i,j])
                 }
+            }
+        }
+    }
 
+    for(let i = 0; i < lines.length; i++){
+        for (let j = 0; j < lines[i].length; j++){
+            if (lines[i][j] === "O"){
+                rocks.push([i,j])
             }
         }
     }
@@ -42,5 +47,18 @@ fs.readFile(fileName, "utf-8", (error, datos) => {
     lines.forEach(line => {
         console.log(line)
     })
+
+    let total = 0
+
+    // sort rocks by row
+    rocks.sort((a,b) => {
+        return a[0] - b[0]
+    })
+
+    rocks.forEach(rock => {
+        total += lines.length - rock[0]
+    })
+
+    console.log("Total", total)
 })
 
