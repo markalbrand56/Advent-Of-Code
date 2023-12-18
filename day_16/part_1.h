@@ -20,7 +20,7 @@ struct Beam {
 void part_1(){
 	cout << "Part 1" << endl;
 
-	Reader reader("sample.txt");
+	Reader reader("input.txt");
 
 	vector<string> map = reader.getContents();
 	vector<string> result = map;
@@ -32,27 +32,27 @@ void part_1(){
 	/*
 
 	 Directions:
-	 	1 -> Right
-	 	-1 -> Left
-	 	2 -> Up
-	 	-2 -> Down
+	 	Right
+	 	Left
+	 	Up
+	 	Down
 
 	 Redirections:
-	 	/ + (1) -> Up
-	 	/ + (-1) -> Down
-	 	/ + (2) -> Right
-	 	/ + (-2) -> Left
+	 	/ + (Right -> Up
+	 	/ + (Left) -> Down
+	 	/ + (Up) -> Right
+	 	/ + (Down) -> Left
 
-	 	\ + (1) -> Down
-	 	\ + (-1) -> Up
-	 	\ + (2) -> Left
-	 	\ + (-2) -> Right
+	 	\ + (Right) -> Down
+	 	\ + (Left) -> Up
+	 	\ + (Up) -> Left
+	 	\ + (Down) -> Right
 
 	Splitters:
-	 	| + (1 or -1) -> Up and Down
-	 	| + (2 or -2) -> Passes through
-	 	- + (1 or -1) -> Passes through
-	 	- + (2 or -2) -> Left and Right
+	 	| + (Right or left) -> Up and Down
+	 	- + (Up or Down) -> Right and Left
+	 	| + (Up or Down) -> Goes through
+	 	- + (Right or Left) -> Goes trough
 
 	Start: Beam on 0,0 going right
 
@@ -62,9 +62,29 @@ void part_1(){
 	 */
 
 	vector<Beam> beams;
-	beams.push_back({ 0, 0, RIGHT }); // Start beam
-	result[0][0] = '#';
 	int activeBeams = 1;
+
+	char startChar = map[0][0];
+
+	if (startChar == '/') {
+		beams.push_back({ 0, 0, UP });
+	}
+	else if (startChar == '\\') {
+		beams.push_back({ 0, 0, DOWN });
+	}
+	else if (startChar == '|') {
+		beams.push_back({ 0, 0, UP });
+		beams.push_back({ 0, 0, DOWN });
+		activeBeams++;
+	}
+	else if (startChar == '-') {
+		beams.push_back({ 0, 0, RIGHT });
+	}
+	else {
+		beams.push_back({ 0, 0, RIGHT });
+	}
+
+	result[0][0] = '#';
 
 	while (activeBeams > 0){
 		for (int i = 0; i < beams.size(); i++) {
