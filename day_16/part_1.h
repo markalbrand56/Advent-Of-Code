@@ -25,7 +25,7 @@ void part_1(){
 	vector<string> map = reader.getContents();
 	vector<string> result = map;
 
-	// replace every '\' '/' '-' '|' with '.' in result
+	// Clean the result map
 	for (int i = 0; i < result.size(); i++) {
 		string line = result[i];
 		for (int j = 0; j < line.size(); j++) {
