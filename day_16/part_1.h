@@ -25,6 +25,17 @@ void part_1(){
 	vector<string> map = reader.getContents();
 	vector<string> result = map;
 
+	// replace every '\' '/' '-' '|' with '.' in result
+	for (int i = 0; i < result.size(); i++) {
+		string line = result[i];
+		for (int j = 0; j < line.size(); j++) {
+			char c = line[j];
+			if (c == '\\' || c == '/' || c == '-' || c == '|') {
+				result[i][j] = '.';
+			}
+		}
+	}
+
 	for (string line : map) {
 		cout << line << endl;
 	}
@@ -63,76 +74,49 @@ void part_1(){
 
 	vector<Beam> beams;
 	int activeBeams = 1;
-
-	char startChar = map[0][0];
-
-	if (startChar == '/') {
-		beams.push_back({ 0, 0, UP });
-	}
-	else if (startChar == '\\') {
-		beams.push_back({ 0, 0, DOWN });
-	}
-	else if (startChar == '|') {
-		beams.push_back({ 0, 0, UP });
-		beams.push_back({ 0, 0, DOWN });
-		activeBeams++;
-	}
-	else if (startChar == '-') {
-		beams.push_back({ 0, 0, RIGHT });
-	}
-	else {
-		beams.push_back({ 0, 0, RIGHT });
-	}
-
-	result[0][0] = '#';
+	beams.push_back({ 0, 0, RIGHT });
 
 	while (activeBeams > 0){
 		for (int i = 0; i < beams.size(); i++) {
 			Beam beam = beams[i];
-			char next;
 
-			if (!beam.active) {
+			if (beam.x < 0 || beam.x >= map[0].size() || beam.y < 0 || beam.y >= map.size()) {
+				// Beam is out of bounds
+				beams[i].active = false;
+				activeBeams--;
+				continue;
+			}
+
+			char cell = map[beam.y][beam.x];
+
+			for (int j = 0; j < beams.size(); j++) {
+				Beam b = beams[j];
+				if (beam.x == b.x && beam.y == b.y && beam.direction == b.direction && i != j) {
+					// There is a beam in the same position and direction that passed before
+					beams[i].active = false;
+					break;
+				}
+			}
+
+			if (!beams[i].active) {
 				continue;
 			}
 
 			switch (beam.direction) {
 				case RIGHT:
-					if (beam.x + 1 >= map[beam.y].size()) {
-						activeBeams--;
-						beams[i].active = false;
-						break;
+					if (cell == '/') {
+						beams.push_back({ beam.x, beam.y - 1, UP }); // Current beam goes up
 					}
-
-					next = map[beam.y][beam.x + 1];
-
-					if (result[beam.y][beam.x + 1] == '#'){
-						// check if there's a beam there that goes in the same direction to avoid loops
-						for (Beam otherBeam : beams) {
-							if (otherBeam.x == beam.x + 1 && otherBeam.y == beam.y && otherBeam.direction == beam.direction) {
-								activeBeams--;
-								beams[i].active = false;
-								break;
-							}
-						}
+					else if (cell == '\\') {
+						beams.push_back({ beam.x, beam.y + 1, DOWN }); // Current beam goes down
 					}
-
-					if (!beams[i].active) {
-						break;
-					}
-
-					if (next == '/') {
-						beams.push_back({ beam.x + 1, beam.y, UP }); // Current beam goes up
-					}
-					else if (next == '\\') {
-						beams.push_back({ beam.x + 1, beam.y, DOWN }); // Current beam goes down
-					}
-					else if (next == '|') {
+					else if (cell == '|') {
 						// Splits
-						beams.push_back({ beam.x + 1, beam.y, DOWN }); // Current beam goes down
-						beams.push_back({ beam.x + 1, beam.y, UP }); // Current beam goes up
+						beams.push_back({ beam.x, beam.y + 1, DOWN }); // Current beam goes down
+						beams.push_back({ beam.x, beam.y - 1, UP }); // Current beam goes up
 						activeBeams++;
 					}
-					else if (next == '-') {
+					else if (cell == '-') {
 						// Keeps going right
 						beams.push_back({ beam.x + 1, beam.y, RIGHT });
 					}
@@ -142,45 +126,22 @@ void part_1(){
 					}
 
 					beams[i].active = false;
-					result[beam.y][beam.x + 1] = '#';
 
 					break;
 				case LEFT:
-					if (beam.x - 1 < 0) {
-						activeBeams--;
-						beams[i].active = false;
-						break;
+					if (cell == '/') {
+						beams.push_back({ beam.x, beam.y + 1, DOWN }); // Current beam goes down
 					}
-
-					next = map[beam.y][beam.x - 1];
-
-					if (result[beam.y][beam.x - 1] == '#') {
-						// check if there's a beam there that goes in the same direction to avoid loops
-						for (Beam otherBeam : beams) {
-							if (otherBeam.x == beam.x - 1 && otherBeam.y == beam.y && otherBeam.direction == beam.direction) {
-								activeBeams--;
-								beams[i].active = false;
-								break;
-							}
-						}
+					else if (cell == '\\') {
+						beams.push_back({ beam.x, beam.y - 1, UP }); // Current beam goes up
 					}
-					if (!beams[i].active) {
-						break;
-					}
-
-					if (next == '/') {
-						beams.push_back({ beam.x - 1, beam.y, DOWN }); // Current beam goes down
-					}
-					else if (next == '\\') {
-						beams.push_back({ beam.x - 1, beam.y, UP }); // Current beam goes up
-					}
-					else if (next == '|') {
+					else if (cell == '|') {
 						// Splits
-						beams.push_back({ beam.x - 1, beam.y, DOWN }); // Current beam goes down
-						beams.push_back({ beam.x - 1, beam.y, UP }); // Current beam goes up
+						beams.push_back({ beam.x, beam.y + 1, DOWN }); // Current beam goes down
+						beams.push_back({ beam.x, beam.y - 1, UP }); // Current beam goes up
 						activeBeams++;
 					}
-					else if (next == '-') {
+					else if (cell == '-') {
 						// Keeps going left
 						beams.push_back({ beam.x - 1, beam.y, LEFT });
 					}
@@ -190,90 +151,44 @@ void part_1(){
 					}
 
 					beams[i].active = false;
-					result[beam.y][beam.x - 1] = '#';
 
 					break;
 				case UP:
-					if (beam.y - 1 < 0) {
-						activeBeams--;
-						beams[i].active = false;
-						break;
+					if (cell == '/') {
+						beams.push_back({ beam.x + 1, beam.y, RIGHT }); // Current beam goes right
 					}
-
-					next = map[beam.y - 1][beam.x];
-
-					if (result[beam.y - 1][beam.x] == '#') {
-						// check if there's a beam there that goes in the same direction to avoid loops
-						for (Beam otherBeam : beams) {
-							if (otherBeam.x == beam.x && otherBeam.y == beam.y - 1 && otherBeam.direction == beam.direction) {
-								activeBeams--;
-								beams[i].active = false;
-								break;
-							}
-						}
+					else if (cell == '\\') {
+						beams.push_back({ beam.x - 1, beam.y, LEFT }); // Current beam goes left
 					}
-					if (!beams[i].active) {
-						break;
-					}
-
-					if (next == '/') {
-						beams.push_back({ beam.x, beam.y - 1, RIGHT }); // Current beam goes right
-					}
-					else if (next == '\\') {
-						beams.push_back({ beam.x, beam.y - 1, LEFT }); // Current beam goes left
-					}
-					else if (next == '|') {
+					else if (cell == '|') {
 						beams.push_back({ beam.x, beam.y - 1, UP }); // Keeps going up
 					}
-					else if (next == '-') {
+					else if (cell == '-') {
 						// Splits
-						beams.push_back({ beam.x, beam.y - 1, RIGHT }); // Current beam goes Right
-						beams.push_back({ beam.x, beam.y - 1, LEFT }); // Current beam goes Left
+						beams.push_back({ beam.x + 1, beam.y, RIGHT }); // Current beam goes Right
+						beams.push_back({ beam.x - 1, beam.y, LEFT }); // Current beam goes Left
 					}
 					else{
 						// Keeps going up
-
 						beams.push_back({ beam.x, beam.y - 1, UP });
 					}
+
 					beams[i].active = false;
-					result[beam.y - 1][beam.x] = '#';
 					break;
 				case DOWN:
-					if (beam.y + 1 >= map.size()) {
-						activeBeams--;
-						beams[i].active = false;
-						break;
+					if (cell == '/') {
+						beams.push_back({ beam.x - 1, beam.y, LEFT }); // Current beam goes left
 					}
-
-					next = map[beam.y + 1][beam.x];
-
-					if (result[beam.y + 1][beam.x] == '#') {
-						// check if there's a beam there that goes in the same direction to avoid loops
-						for (Beam otherBeam : beams) {
-							if (otherBeam.x == beam.x && otherBeam.y == beam.y + 1 && otherBeam.direction == beam.direction) {
-								activeBeams--;
-								beams[i].active = false;
-								break;
-							}
-						}
+					else if (cell == '\\') {
+						beams.push_back({ beam.x + 1, beam.y, RIGHT }); // Current beam goes right
 					}
-					if (!beams[i].active) {
-						break;
-					}
-
-					if (next == '/') {
-						beams.push_back({ beam.x, beam.y + 1, LEFT }); // Current beam goes left
-					}
-					else if (next == '\\') {
-						beams.push_back({ beam.x, beam.y + 1, RIGHT }); // Current beam goes right
-					}
-					else if (next == '|') {
+					else if (cell == '|') {
 						beams.push_back({ beam.x, beam.y + 1, DOWN }); // Keeps going down
 					}
-					else if (next == '-') {
+					else if (cell == '-') {
 						// Splits
-						beams.push_back({ beam.x, beam.y + 1, RIGHT }); // Current beam goes Right
-						beams.push_back({ beam.x, beam.y + 1, LEFT }); // Current beam goes Left
+						beams.push_back({ beam.x + 1, beam.y, RIGHT }); // Current beam goes Right
+						beams.push_back({ beam.x - 1, beam.y, LEFT }); // Current beam goes Left
 					}
 					else {
 						// Keeps going down
@@ -281,11 +196,10 @@ void part_1(){
 					}
 
 					beams[i].active = false;
-					result[beam.y + 1][beam.x] = '#';
 
 					break;
 			}
-
+			result[beam.y][beam.x] = '#';
 		}
 	}
 
