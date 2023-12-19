@@ -32,7 +32,17 @@ void part_1() {
 
 	for (int i = 0; i < length; i++) {
 		char *l = lines[i];
-
 		printf("%s\n", l);
+
+		char *parts[3];
+		int part_length = 0;
+		char *part = strtok(l, " ");
+		while (part != NULL) {
+			parts[part_length] = strdup(part);
+			part_length++;
+			part = strtok(NULL, " ");
+		}
+
+		printf("%s-%s-%s\n", parts[0], parts[1], parts[2]);
 	}
 }
