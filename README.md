@@ -22,7 +22,7 @@
 
 ### Day 4: Scratchcards ⭐⭐ [<img align="left" alt="C" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" style="padding-right:10px;" />]()
 
-### Day 5: If You Give A Seed A Fertilizer ⭐❓ [<img align="left" alt="C" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" style="padding-right:10px;" />]()
+### Day 5: If You Give A Seed A Fertilizer ⭐❓ [<img align="left" alt="C++" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" style="padding-right:10px;" />]()
 > [!NOTE]
 > De la parte 1 a la parte 2 pasan de procesarse 20 semillas a procesarse literalmente casi dos mil millones de semillas. Mi computadora pasó más de dos horas ejecutando el programa y no logró terminar (con multithreading implementado).
 > Tengo confianza de que el algoritmo está bien pero hasta el momento no he terminado la ejecución, otro día lo dejaré corriendo para ver si me da la respuesta correcta.
@@ -44,4 +44,6 @@
 ### Day 14: Parabolic Reflector Dish ⭐⭐ [<img align="left" alt="JS" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" style="padding-right:10px;" />]()
 
 ### Day 15: Lens Library ⭐⭐ [<img align="left" alt="Python" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" style="padding-right:10px;" />]()
+
+### Day 16: The Floor Will Be Lava ⭐⭐ [<img align="left" alt="C++" width="35px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" style="padding-right:10px;" />]()
 
