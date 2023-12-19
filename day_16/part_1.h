@@ -36,9 +36,9 @@ void part_1(){
 		}
 	}
 
-	for (string line : map) {
-		cout << line << endl;
-	}
+//	for (string line : map) {
+//		cout << line << endl;
+//	}
 
 	/*
 
@@ -203,10 +203,10 @@ void part_1(){
 		}
 	}
 
-	cout << "Result" << endl;
-	for (string line : result) {
-		cout << line << endl;
-	}
+//	cout << "Result" << endl;
+//	for (string line : result) {
+//		cout << line << endl;
+//	}
 
 	// count '#' in result
 	int count = 0;

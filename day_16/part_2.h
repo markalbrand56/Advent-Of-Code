@@ -6,13 +6,9 @@ using namespace std;
 void part_2(){
 	cout << "\nPart 2" << endl;
 
-	Reader reader("sample.txt");
+	Reader reader("input.txt");
 
 	vector<string> map = reader.getContents();
-
-	for (string line : map) {
-		cout << line << endl;
-	}
 
 	/*
 
@@ -39,7 +35,8 @@ void part_2(){
 	 	| + (Up or Down) -> Goes through
 	 	- + (Right or Left) -> Goes trough
 
-	Start: Beam on 0,0 going right
+	Start: any edge tile and heading away from that edge
+	 	You can choose either of two directions for the beam if it starts on a corner
 
 	Wherever a beam pases, it becomes energized ('.' -> '#')
 	The beams will continue until they hit a splitter or a corner
@@ -47,7 +44,28 @@ void part_2(){
 	 */
 
 	vector<Beam> startingBeams;
-	startingBeams.push_back({ 0, 0, RIGHT });
+	long long max_energized = 0;
+
+	// Find all starting beams
+	// Top edges: Top to bottom
+	for (int column = 0; column < map[0].size(); column++){
+		startingBeams.push_back({ column, 0, DOWN });
+	}
+
+	// Bottom edges: Bottom to top
+	for (int column = 0; column < map[0].size(); column++) {
+		startingBeams.push_back({ column, static_cast<int>(map.size() - 1), UP });
+	}
+
+	// Left edges: Left to right
+	for (int row = 0; row < map.size(); row++) {
+		startingBeams.push_back({ 0, row, RIGHT });
+	}
+
+	// Right edges: Right to left
+	for (int row = 0; row < map.size(); row++) {
+		startingBeams.push_back({ static_cast<int>(map[0].size() - 1), row, LEFT });
+	}
 
 	for (Beam starting_beam : startingBeams) {
 		vector<string> result = map;
@@ -204,11 +222,12 @@ void part_2(){
 			}
 		}
 
-		// count '#' in result
+		if (count > max_energized) {
+			max_energized = count;
+		}
 
-		cout << "Result: " << count << endl;
 	}
 
-
+	cout << "Max energized: " << max_energized << endl;
 
 }
