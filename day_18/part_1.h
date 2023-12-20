@@ -61,7 +61,7 @@ void part_1() {
 
 	struct coord borders[input_coords];
 	borders[0] = (struct coord) {0, 0};
-	int k = 0;
+	int new_coords = 0;
 
 	for (int i = 0; i < length; i++) {
 		char *l = strdup(lines[i]);
@@ -83,16 +83,16 @@ void part_1() {
 
 		for(int j = 0; j < distance; j++) {
 			if (direction == 'R') {
-				borders[k + 1] = (struct coord) {borders[k].x + 1, borders[k].y};
+				borders[new_coords + 1] = (struct coord) {borders[new_coords].x + 1, borders[new_coords].y};
 			} else if (direction == 'L') {
-				borders[k + 1] = (struct coord) {borders[k].x - 1, borders[k].y};
+				borders[new_coords + 1] = (struct coord) {borders[new_coords].x - 1, borders[new_coords].y};
 			} else if (direction == 'U') {
-				borders[k + 1] = (struct coord) {borders[k].x, borders[k].y + 1};
+				borders[new_coords + 1] = (struct coord) {borders[new_coords].x, borders[new_coords].y + 1};
 			} else if (direction == 'D') {
-				borders[k + 1] = (struct coord) {borders[k].x, borders[k].y - 1};
+				borders[new_coords + 1] = (struct coord) {borders[new_coords].x, borders[new_coords].y - 1};
 			}
 
-			k++;
+			new_coords++;
 		}
 
 		free(parts[0]);
@@ -126,19 +126,55 @@ void part_1() {
 	int area = 0;
 	for (int i = min_y; i <= max_y; i++) {
 		for (int j = min_x; j <= max_x; j++) {
+			struct coord current = (struct coord) {j, i};
 			// Find if this coord is either in the borders array or inside the figure
 			// To be inside the figure, it must be able to reach a coord in the borders array in each direction
-			// If it can, then it is inside the figure
+			// So, in the current coord there has to be another coord with the same X and one Y above and one Y below
+			// And there has to be another coord with the same Y and one X left and one X right
+			// If there is, then this coord is inside the figure, so +1 to area
 
-			struct coord current = (struct coord) {j, i};
+			int x_right = 0; // How many coords with the same X to the right
+			int x_left = 0; // How many coords with the same X to the left
+			int y_up = 0; // How many coords with the same Y above
+			int y_down = 0; // How many coords with the same Y below
 
-			int left = 0;
-			int right = 0;
-			int up = 0;
-			int down = 0;
+			for (int k = 0; k < input_coords; k++) {
+
+				if (current.x == borders[k].x && current.y == borders[k].y) {
+					x_left++;
+					x_right++;
+					y_up++;
+					y_down++;
+					break;
+				}
+
+				if (current.x == borders[k].x){
+					if (current.y < borders[k].y) {
+						y_up++;
+					} else if (current.y > borders[k].y) {
+						y_down++;
+					}
+				} else if (current.y == borders[k].y) {
+					if (current.x < borders[k].x) {
+						x_right++;
+					} else if (current.x > borders[k].x) {
+						x_left++;
+					}
+				}
+
+			}
+
+			if (x_right > 0 && x_left > 0 && y_up > 0 && y_down > 0) {
+				area++;
+				printf("Inside: %d, %d\n", current.x, current.y);
+			} else {
+				printf("Outside: %d, %d\n", current.x, current.y);
+			}
 
 
 		}
 	}
+
+	printf("Area: %d\n", area);
 
 }
