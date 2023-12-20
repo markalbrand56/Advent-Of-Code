@@ -14,7 +14,7 @@ void part_1() {
 
 	FILE *fp;
 
-	fp = fopen("sample.txt", "r");
+	fp = fopen("input.txt", "r");
 
 	if (fp == NULL) {
 		printf("Error opening file\n");
@@ -166,9 +166,9 @@ void part_1() {
 
 			if (x_right > 0 && x_left > 0 && y_up > 0 && y_down > 0) {
 				area++;
-				printf("Inside: %d, %d\n", current.x, current.y);
+//				printf("Inside: %d, %d\n", current.x, current.y);
 			} else {
-				printf("Outside: %d, %d\n", current.x, current.y);
+//				printf("Outside: %d, %d\n", current.x, current.y);
 			}
 
 
